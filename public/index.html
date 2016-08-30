@@ -6,22 +6,27 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.js"></script>
 
-    <script src="javascripts/app.js"></script>
-    <script src="javascripts/dataService.js"></script>
-    <script src="javascripts/landing/landingDirective.js"></script>
-    <script src="javascripts/landing/landingTemplate.html"></script>
-    <script src="javascripts/navigation/navDirective.js"></script>
-    <script src="javascripts/navigation/navTemplate.html"></script>
+    <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Yeseva+One" rel="stylesheet">
+
+    <script src="javascripts/app.js" type="text/javascript"></script>
+    <script src="javascripts/dataService.js" type="text/javascript"></script>
+    <script src="javascripts/landing/landingDirective.js" type="text/javascript"></script>
+    <script src="javascripts/landing/landingTemplate.html" type="text/html"></script>
+    <script src="javascripts/navigation/navDirective.js" type="text/javascript"></script>
+    <script src="javascripts/navigation/navTemplate.html" type="text/html" ></script>
 
 
     <link rel="stylesheet" type="text/css" href="stylesheets/external/semantic/semantic.css" />
 
     <link rel="stylesheet/less" type="text/css" href="stylesheets/main.less" />
+    <link rel="stylesheet/less" type="text/css" href="stylesheets/nav.less" />
     <script src="javascripts/external/less.js" type="text/javascript"></script>
   </head>
 
   <body ng-app="moneystuff">
-    <div ng-view>ALISEHGOLIAHSEGOLIHAOSIEGH</div> <!-- route content -->
-    <isolate-scope-with-controller></isolate-scope-with-controller>
+    <nav-directive></nav-directive>
+    <div ng-view></div> <!-- route content -->
+    
   </body>
 </html>
