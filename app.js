@@ -5,11 +5,10 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var firebase = require('firebase');
+var config = require('./config.js');
 
-firebase.initializeApp({
-  serviceAccount: "config.json",
-  databaseURL: "https://budgeting-41eaa.firebaseio.com/"
-})
+
+firebase.initializeApp(config.firebase);
 
 var routes = require('./routes/index');
 
