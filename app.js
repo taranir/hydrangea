@@ -5,12 +5,13 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var firebase = require('firebase');
+
 var config = require('./config.js');
 
 
-firebase.initializeApp(config.firebase);
+var firebaseRef = firebase.initializeApp(config.firebase);
 
-var routes = require('./routes/index');
+var routes = require('./routes/index')(firebaseRef.database());
 
 var app = express();
 
