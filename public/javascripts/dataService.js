@@ -1,5 +1,4 @@
 angular.module('moneystuff')
-<<<<<<< 56bd84384d6bc8c92a59433c4e1dc958049a3ee9
   .service("dataService", ['$firebaseObject', '$firebaseArray', 
     function($firebaseObject, $firebaseArray) {
     var db = firebase.database();

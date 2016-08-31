@@ -10,6 +10,7 @@ app.directive('navigation', function () {
       ['Joe', '/joepage'],
       ['Summary', '/summary'],
       ['Settings', '/settings']
+    ];
 
     $scope.navigate = function (url) {
       console.log(url);
