@@ -1,5 +1,5 @@
 angular.module('moneystuff')
-  .service("dataService", ['$firebaseObject', '$firebaseArray', 
+  .service("dataService", ['$firebaseObject', '$firebaseArray',
     function($firebaseObject, $firebaseArray) {
     var db = firebase.database();
     // var ref = firebase.database().ref();
@@ -43,24 +43,26 @@ angular.module('moneystuff')
       if (!day) {
         day = new Date().getDate().toString();
       }
-      return year + pad(month) + pad(day);
+      return "" + year + pad(month.toString()) + pad(day.toString());
     };
 
-    this.saveNewTransaction = function(year, month, day, amount, description) {
-      var newTransaction = {
-        date: processDate(year, month, day),
-        users: {
-          joe: true,
-          tian: true,
-        },
-        categories: {
-          food: true
-        },
-        amount: amount,
-        description: description
+    this.getNewTransaction = function() {
+      var today = new Date();
+      return {
+        year: today.getFullYear(),
+        month: today.getMonth() + 1,
+        day: today.getDate(),
+        date: processDate(today.getFullYear(), today.getMonth() + 1, today.getDate()),
+        users: {},
+        categories: {},
+        amount: 0,
+        description: ""
       };
-      return db.ref("transactions").push(newTransaction);
     };
+
+    this.saveNewTransaction = function(transaction) {
+      return db.ref("transactions").push(transaction);
+    }
 
     this.addRandomTransaction = function() {
       this.saveNewTransaction("2016", getRandomInt(1, 12).toString(), getRandomInt(1, 31).toString(), getRandomInt(1, 9999), "test");
@@ -78,29 +80,29 @@ angular.module('moneystuff')
       return $firebaseObject(db.ref("transactions/" + ref.key));
     };
 
-    this.getRef = function() {
-      // return ref.child("test").ref("-KQOlG3rKHt6D6rKg6Qo");
-    };
+    /////////////
+    // Budgets //
+    /////////////
 
-    this.getAllTestsFBObj = function() {
-      // return $firebaseObject(ref.child("test"));
-    };
+    // {
+    //   date: "201605"
+    //   user: {
+    //     joe: true
+    //   }
+    //   category: {
+    //     food: 1425,
+    //     travel: 1234,
+    //     games: 321
+    //   }
+    // }
 
-    this.asdf = function() {
-      console.log("lakjsdlfjlajsdf");
-      // ref.child("transactions").push({
-      //   date: new Date().getTime(),
-      //   users: {
-      //     joe: true,
-      //     tian: true,
-      //   },
-      //   categories: {
-      //     food: true
-      //   },
-      //   amount: Math.random() * 100,
-      //   description: "alkjsdf"
-      // });
-    };
+    this.getBudgetForMonth = function() {
+
+    }
+
+    this.saveBudget = function() {
+
+    }
 
     return this;
   }]);

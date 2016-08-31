@@ -13,7 +13,28 @@ app.directive('transactionTable', function () {
       // sort array by date
     }
     init();
-      
+    $scope.newTransaction = dataService.getNewTransaction();
+    $scope.newTransaction.users["joe"] = true;
+    $scope.newTransaction.users["tian"] = true;
+    $scope.newTransaction.categories["food"] = true;
+
+
+    $scope.addTransaction = function() {
+      dataService.saveNewTransaction($scope.newTransaction);
+      $scope.newTransaction = dataService.getNewTransaction();
+      $scope.newTransaction.users["joe"] = true;
+      $scope.newTransaction.users["tian"] = true;
+      $scope.newTransaction.categories["food"] = true;
+    }
+
+    $scope.amountTotal = function() {
+      return $scope.transactionArray.map(function(t) {
+        return t.amount;
+      }).reduce(function(a1, a2) {
+        return a1 + a2;
+      }, 0);
+    };
+
     }
   ];
   return {
