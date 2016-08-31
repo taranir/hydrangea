@@ -3,14 +3,12 @@
 angular
   .module('moneystuff', [
     'ngRoute',
-    'firebase',
-    'dataService'
-  ])
-  .config(['$routeProvider', '$locationProvider',
-    function($routeProvider, $locationProvider) {
-    $routeProvider.
-      when('/', {
-        templateUrl: '<landing></landing>',
-      });
-  }]);
-
+    'firebase'
+  ]);
+  // .config(['$routeProvider', '$locationProvider',
+  //   function($routeProvider, $locationProvider) {
+  //   $routeProvider.
+  //     when('/', {
+  //       templateUrl: '<landing></landing>',
+  //     });
+  // }]);
