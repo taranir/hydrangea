@@ -1,5 +1,7 @@
 angular.module('moneystuff')
-  .service("dataService", ['$firebaseObject', function($firebaseObject) {
+<<<<<<< 56bd84384d6bc8c92a59433c4e1dc958049a3ee9
+  .service("dataService", ['$firebaseObject', '$firebaseArray', 
+    function($firebaseObject, $firebaseArray) {
     var db = firebase.database();
     // var ref = firebase.database().ref();
 
@@ -9,6 +11,11 @@ angular.module('moneystuff')
 
     this.getAllTransactionsFBObj = function() {
       return $firebaseObject(db.ref("transactions")
+        .orderByChild("date"));
+    };
+
+    this.getAllTransactionsFBArray = function() {
+      return $firebaseArray(db.ref("transactions")
         .orderByChild("date"));
     };
 
