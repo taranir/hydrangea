@@ -4,14 +4,8 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var firebase = require('firebase');
 
-var config = require('./config.js');
-
-
-var firebaseRef = firebase.initializeApp(config.firebase);
-
-var routes = require('./routes/index')(firebaseRef.database());
+var routes = require('./routes/index');
 
 var app = express();
 

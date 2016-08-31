@@ -10,15 +10,9 @@ app.directive('navDirective', function () {
       ['Summary', '/summary'],
       ['Settings', '/settings']
     ]
-    dataService.asdf();
-    // $scope.tests = dataService.getAllTestsFBObj();
-    // $scope.asdf = {
-    //   test: "alskdjf"
-    // };
+
     $scope.navigate = function (url) {
       console.log(url);
-      dataService.asdf();
-      // $scope.asdf = $firebaseObject(dataService.getRef());
     };
   }];
   return {
