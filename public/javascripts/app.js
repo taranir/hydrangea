@@ -13,4 +13,3 @@ angular
         templateUrl: '<landing></landing>',
       });
   }]);
-
