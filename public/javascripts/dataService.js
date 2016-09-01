@@ -8,6 +8,23 @@ angular.module('moneystuff')
     // Transactions //
     //////////////////
 
+    // {
+    //   year: today.getFullYear(),
+    //   month: today.getMonth() + 1,
+    //   day: today.getDate(),
+    //   date: processDate(today.getFullYear(), today.getMonth() + 1, today.getDate()),
+    //   users: {
+    //     joe: true,
+    //     tian: true
+    //   },
+    //   categories: {
+    //     food: true,
+    //     asdf: true
+    //   },
+    //   amount: 0,
+    //   description: ""
+    // }
+
     this.getAllTransactionsFBObj = function() {
       return $firebaseObject(db.ref("transactions")
         .orderByChild("date"));
@@ -85,24 +102,61 @@ angular.module('moneystuff')
     /////////////
 
     // {
-    //   date: "201605"
-    //   user: {
-    //     joe: true
-    //   }
-    //   category: {
-    //     food: 1425,
-    //     travel: 1234,
-    //     games: 321
+    //   date: "201605", // null for proposed
+    //   joe: {
+    //     categories: {
+    //       games: [321, 12, 0], // [proposed, from rollover, actual]
+    //       electronics: [1234, 0, 142],
+    //     }
+    //     rollover: {
+    //       games: true
+    //     }
+    //   },
+    //   tian: {
+    //     categories: {
+    //       discretionary: [1335, 0, 0],
+    //     }
+    //     rollover: {}
+    //   },
+    //   all: {
+    //     categories: {
+    //       food: [5432, 143, 513],
+    //       travel: [2356, 0, 0],
+    //     }
+    //     rollover: {
+    //       food: true
+    //     }
     //   }
     // }
 
-    this.getBudgetForMonth = function() {
+    this.getAllBudgetsFBArray = function() {
+      return $firebaseArray(db.ref("budgets")
+        .orderByChild("date"));
+    };
 
-    }
+    this.getNewBudget = function(lastBudget, proposedBudget, newDate) {
+      var newBudget = JSON.parse(JSON.stringify(proposedBudget));
+      for (var user in newBudget) {
+        var userBudget = newBudget[user];
 
-    this.saveBudget = function() {
+        for (var category in userBudget["categories"]) {
+          if (userBudget["rollover"][category]) {
+            var result = lastBudget[user]["categories"][category];
+            if (result) {
+              // proposed + from rollover - actual
+              var rollover = result[0] + result[1] - result[2];
+              userBudget["categories"][category][1] = rollover;
+            }
+          }
+        }
+      }
+      newBudget[date] = newDate;
+      return newBudget;
+    };
 
-    }
+    this.saveBudget = function(budget) {
+      return db.ref("budgets").push(budget);
+    };
 
     return this;
   }]);
