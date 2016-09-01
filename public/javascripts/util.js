@@ -20,16 +20,31 @@ function processDate(year, month, day) {
 };
 
 function aggregateTransactions(transactions) {
+  var users = {
+    all: {},
+    joe: {},
+    tian: {}
+  };
   var categories = {};
   for (var i = 0; i < transactions.length; i++) {
     var t = transactions[i];
     for (var category in t.categories) {
-      if (!(category in categories)) {
-        categories[category] = 0;
+
+      function inc(p) {
+        users[p][category] = (users[p][category] || 0) + t.amount;
       }
-      categories[category] += t.amount;
+
+      if (t.users["joe"]) {
+        inc("joe");
+      }
+      if (t.users["tian"]) {
+        inc("tian");
+      }
+      if (t.users["joe"] && t.users["tian"]) {
+        inc("all");
+      }
     }
   }
-  console.log(categories);
-  return categories;
+  console.log(users);
+  return users;
 };
