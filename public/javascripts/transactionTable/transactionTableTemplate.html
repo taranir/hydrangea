@@ -20,9 +20,11 @@
     <th><div class="ui input">
       <input type="number" ng-model="newTransaction.amount">
     </div></th>
-    <th>Category</th>
+    <th><div class="ui input">
+      <input type="text" ng-model="newTransaction.category">
+    </div></th>
   </tr>
-  <tr ng-repeat="transaction in transactionArray">
+  <tr ng-repeat="transaction in transactionArray | orderBy:'-date'">
     <td>{{transaction.date}}</td>
     <td>{{transaction.users}}</td>
     <td>{{transaction.description}}</td>

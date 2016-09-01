@@ -6,6 +6,7 @@ app.directive('transactionTable', function () {
       $scope.transactionArray.$loaded()
         .then(function() {
           console.log($scope.transactionArray);
+          aggregateTransactions($scope.transactionArray);
         })
         .catch(function(error) {
           console.log("error fetching transactions", error)
@@ -46,6 +47,9 @@ app.directive('transactionTable', function () {
     }
 
     $scope.addTransaction = function() {
+      $scope.newTransaction.categories = {};
+      $scope.newTransaction.categories[$scope.newTransaction.category] = true;
+
       dataService.saveNewTransaction($scope.newTransaction);
       $scope.newTransaction = dataService.getNewTransaction();
       $scope.newTransaction.users["joe"] = true;
