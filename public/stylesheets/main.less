@@ -10,19 +10,37 @@ body {
   height: 100%;
   font-family: 'Merriweather Sans', sans-serif;
 
-  h1 {
-    font-family: 'Yeseva One', serif;
-  }
+    h1 {
+      font-family: 'Yeseva One', serif;
+    }
 
-  .top-bar {
-    height: 10px;
-    width: 100%;
-    background-color: @platinum;
-  }
+    .top-bar {
+      height: 10px;
+      width: 100%;
+      background-color: @platinum;
+    }
 
-  .view {
-    position: absolute;
-    left: @navWidth;
-    padding: 50px;
+  .container {
+    display: flex;
+    flex-wrap: nowrap;
+
+    .flex-wrapper {
+      display: flex;
+    }
+
+    .view-wrapper {
+      padding: 50px;
+      flex-grow: 1;
+    }
+
+    .piggy-wrapper {
+      width: @piggyWidth;
+      height: 100%;
+    }
+
+    .nav-wrapper {
+      width: @navWidth;
+      height: 100%;
+    }
   }
 }

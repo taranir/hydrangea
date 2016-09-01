@@ -49,14 +49,20 @@ angular.module('moneystuff')
         month: today.getMonth() + 1,
         day: today.getDate(),
         date: processDate(today.getFullYear(), today.getMonth() + 1, today.getDate()),
-        users: {},
-        categories: {},
+        users: {
+          joe: true,
+          tian: true
+        },
+        categories: {
+          food: true
+        },
         amount: 0,
         description: ""
       };
     };
 
     this.saveNewTransaction = function(transaction) {
+      transaction.date = processDate(parseInt(transaction.year), parseInt(transaction.month), parseInt(transaction.day));
       return db.ref("transactions").push(transaction);
     }
 
