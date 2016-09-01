@@ -134,6 +134,43 @@ angular.module('moneystuff')
         .orderByChild("date"));
     };
 
+    this.getProposedBudgetFBObj = function() {
+      return $firebaseObject(db.ref("/proposed"));
+    };
+
+    this.saveProposedBudget = function(proposed) {
+      return db.ref("/proposed").set(proposed);
+    }
+
+    this.getEmptyBudget = function() {
+      return {
+        joe: {
+          categories: {
+            games: [321, 12, 0], // [proposed, from rollover, actual]
+            electronics: [1234, 0, 142],
+          },
+          rollover: {
+            games: true
+          }
+        },
+        tian: {
+          categories: {
+            discretionary: [1335, 0, 0],
+          },
+          rollover: {}
+        },
+        all: {
+          categories: {
+            food: [5432, 143, 513],
+            travel: [2356, 0, 0],
+          },
+          rollover: {
+            food: true
+          }
+        }
+      };
+    };
+
     this.getNewBudget = function(lastBudget, proposedBudget, newDate) {
       var newBudget = JSON.parse(JSON.stringify(proposedBudget));
       for (var user in newBudget) {

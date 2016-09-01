@@ -45,6 +45,11 @@ app.directive('transactionTable', function () {
       });
     }
 
+    $scope.proposed = dataService.getEmptyBudget();
+    dataService.saveProposedBudget($scope.proposed);
+    $scope.proposed.date = "201609";
+    dataService.saveBudget($scope.proposed);
+
     $scope.addTransaction = function() {
       dataService.saveNewTransaction($scope.newTransaction);
       $scope.newTransaction = dataService.getNewTransaction();
