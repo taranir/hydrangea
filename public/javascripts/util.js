@@ -6,6 +6,10 @@ function pad(s) {
   return (Array(3).join("0") + s.toString()).substring(s.toString().length);
 };
 
+function getMonth(date) {
+  return date.getFullYear().toString() + pad((date.getMonth() + 1).toString())
+};
+
 function processDate(year, month, day) {
   if (!year) {
     year = new Date().getFullYear().toString();
@@ -22,8 +26,8 @@ function processDate(year, month, day) {
 function aggregateTransactions(transactions) {
   var users = {
     all: {},
-    joe: {},
-    tian: {}
+    tian: {},
+    joe: {}
   };
   var categories = {};
   for (var i = 0; i < transactions.length; i++) {
@@ -45,6 +49,28 @@ function aggregateTransactions(transactions) {
       }
     }
   }
-  console.log(users);
   return users;
+};
+
+function aggregateTransactionsForMonth(transactions, currentMonth) {
+  var filteredTransactions = transactions.filter(function(t) {
+    return t.date.indexOf(currentMonth) != -1;
+  });
+  return aggregateTransactions(filteredTransactions);
+};
+
+function updateBudget(budget, aggregates) {
+  for (var user in budget) {
+    if (user == "date" || user[0] == "$") {
+      continue;
+    }
+    var userBudget = budget[user];
+    for (var category in userBudget.categories) {
+      if (user in aggregates) {
+        if (category in aggregates[user]) {
+          userBudget.categories[category][2] = aggregates[user][category];
+        }
+      }
+    }
+  }
 };

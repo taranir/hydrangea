@@ -1,3 +1,21 @@
 <div class="piggy">
 pig lol
+  <div>
+    <!-- <div ng-repeat="(user, title) in [['all', 'Combined'], ['tian', 'Tian'], ['joe', 'Joe']]">
+    </div> -->
+    Combined:
+    <div ng-repeat="(category, amounts) in currentBudget.all.categories">
+      * {{category}}: {{amounts[2]}} of {{amounts[0]}}
+    </div>
+    Tian:
+    <div ng-repeat="(category, amounts) in currentBudget.tian.categories">
+      * {{category}}: {{amounts[2]}} of {{amounts[0]}}
+    </div>
+    All:
+    <div ng-repeat="(category, amounts) in currentBudget.joe.categories">
+      * {{category}}: {{amounts[2]}} of {{amounts[0]}}
+    </div>
+  </div>
+----------------------------
+  {{currentBudget}}
 </div>

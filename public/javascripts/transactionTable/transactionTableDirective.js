@@ -45,6 +45,10 @@ app.directive('transactionTable', function () {
       }, 0);
     };
 
+    $scope.deleteTransaction = function(key) {
+      dataService.deleteTransaction(key);
+    };
+
     }
   ];
   return {

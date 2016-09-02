@@ -2,6 +2,7 @@ angular.module('moneystuff')
   .service("dataService", ['$firebaseObject', '$firebaseArray',
     function($firebaseObject, $firebaseArray) {
     var db = firebase.database();
+    var allTransactions;
     // var ref = firebase.database().ref();
 
     //////////////////
@@ -31,8 +32,11 @@ angular.module('moneystuff')
     };
 
     this.getAllTransactionsFBArray = function() {
-      return $firebaseArray(db.ref("transactions")
-        .orderByChild("date"));
+      if (!allTransactions) {
+        allTransactions = $firebaseArray(db.ref("transactions")
+          .orderByChild("date"));
+      }
+      return allTransactions;
     };
 
     this.getTransactionsFBObj = function(sy, sm, sd, ey, em, ed) {
@@ -177,7 +181,9 @@ angular.module('moneystuff')
     };
 
     this.saveBudget = function(budget) {
-      return db.ref("budgets").push(budget);
+      console.log("saving budget:");
+      console.log(budget);
+      return db.ref("budgets/" + budget.date).set(budget);
     };
 
     return this;

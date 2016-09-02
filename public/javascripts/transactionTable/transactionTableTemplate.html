@@ -8,6 +8,7 @@
     <th>Description</th>
     <th>Amount</th>
     <th>Category</th>
+    <th></th>
   </tr></thead>
   <tr>
     <td class="input-row">
@@ -29,6 +30,7 @@
       </div>
     </td>
     <td>Category</td>
+    <td></td>
   </tr>
   <tr ng-repeat="transaction in transactionArray | orderBy:'-date'">
     <td>{{transaction.date}}</td>
@@ -36,5 +38,10 @@
     <td>{{transaction.description}}</td>
     <td>{{transaction.amount}}</td>
     <td>{{transaction.categories}}</td>
+    <td>
+      <button class="ui icon button" ng-click="deleteTransaction(transaction.$id)">
+        <i class="ban icon"></i>
+      </button>
+    </td>
   </tr>
 </table>
