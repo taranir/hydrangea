@@ -2,6 +2,10 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
+function getRandomAmount(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) * 100) / 100.0 + min;
+};
+
 function pad(s) {
   return (Array(3).join("0") + s.toString()).substring(s.toString().length);
 };
@@ -29,27 +33,28 @@ function aggregateTransactions(transactions) {
     tian: {},
     joe: {}
   };
+  var paid = {
+    tian: 0,
+    joe: 0
+  };
   var categories = {};
   for (var i = 0; i < transactions.length; i++) {
     var t = transactions[i];
-    for (var category in t.categories) {
-
+    for (var ci in t.categories) {
+      var category = t.categories[ci];
       function inc(p) {
         users[p][category] = (users[p][category] || 0) + t.amount;
       }
 
-      if (t.users["joe"]) {
-        inc("joe");
-      }
-      if (t.users["tian"]) {
-        inc("tian");
-      }
-      if (t.users["joe"] && t.users["tian"]) {
+      if (t.shared) {
         inc("all");
+
+        paid[t.user] += t.amount;
       }
+      inc(t.user);
     }
   }
-  return users;
+  return [users, paid];
 };
 
 function aggregateTransactionsForMonth(transactions, currentMonth) {

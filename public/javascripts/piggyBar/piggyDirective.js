@@ -31,8 +31,19 @@ app.directive('piggy', function () {
       if ($scope.transactionArray && $scope.currentBudget) {
         // update aggregates
         var aggregates = aggregateTransactionsForMonth($scope.transactionArray, $scope.currentMonth);
+
+        $scope.paid = aggregates[1];
+        var jot = $scope.paid.tian - $scope.paid.joe;
+        if (jot > 0) {
+          $scope.paidText = "Joe owes Tian " + jot/2.0;
+        } else if (jot < 0) {
+          $scope.paidText = "Tian owes Joe " + jot/-2.0;
+        } else {
+          $scope.paidText = "All good";
+        }
+
         // recalculate current budget
-        updateBudget($scope.currentBudget, aggregates);
+        updateBudget($scope.currentBudget, aggregates[0]);
         // save current budget
         $scope.budgetArray.$save($scope.currentbudget);
         // dataService.saveBudget($scope.currentBudget);

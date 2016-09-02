@@ -4,6 +4,7 @@
 <table class="transaction-table ui single line celled table">
   <thead><tr>
     <th>Date</th>
+    <th>Shared</th>
     <th>User</th>
     <th>Description</th>
     <th>Amount</th>
@@ -18,7 +19,22 @@
         <input class="day-input" type="text" ng-keypress="inputKeypress($event)" ng-model="newTransaction.day">
       </div>
     </td>
-    <td>User</td>
+    <td>
+      <label>
+        <input type="checkbox" ng-model="newTransaction.shared">
+        Shared
+      </label><br/>
+    </td>
+    <td>
+      <label>
+        <input type="radio" ng-model="newTransaction.user" value="joe">
+        Joe
+      </label><br/>
+      <label>
+        <input type="radio" ng-model="newTransaction.user" value="tian">
+        Tian
+      </label><br/>
+    </td>
     <td>
       <div class="ui input">
         <input type="text" ng-keypress="inputKeypress($event)" ng-model="newTransaction.description">
@@ -26,15 +42,21 @@
     </td>
     <td>
       <div class="ui input">
-        <input type="number" ng-keypress="inputKeypress($event)" ng-model="newTransaction.amount">
+        <input class="amount-input" type="number" ng-keypress="inputKeypress($event)" ng-model="newTransaction.amount">
       </div>
     </td>
-    <td>Category</td>
+    <td>
+      <div class="ui input">
+        <input type="text" ng-keypress="inputKeypress($event)" ng-model="newTransaction.categories">
+        <button class="ui button">+</button>
+      </div>
+    </td>
     <td></td>
   </tr>
   <tr ng-repeat="transaction in transactionArray | orderBy:'-date'">
     <td>{{transaction.date}}</td>
-    <td>{{transaction.users}}</td>
+    <td>{{transaction.shared}}</td>
+    <td>{{transaction.user}}</td>
     <td>{{transaction.description}}</td>
     <td>{{transaction.amount}}</td>
     <td>{{transaction.categories}}</td>

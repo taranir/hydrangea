@@ -14,10 +14,8 @@ angular.module('moneystuff')
     //   month: today.getMonth() + 1,
     //   day: today.getDate(),
     //   date: processDate(today.getFullYear(), today.getMonth() + 1, today.getDate()),
-    //   users: {
-    //     joe: true,
-    //     tian: true
-    //   },
+    //   shared: true,
+    //   user: "joe",
     //   categories: {
     //     food: true,
     //     asdf: true
@@ -53,13 +51,9 @@ angular.module('moneystuff')
         month: today.getMonth() + 1,
         day: today.getDate(),
         date: processDate(today.getFullYear(), today.getMonth() + 1, today.getDate()),
-        users: {
-          joe: true,
-          tian: true
-        },
-        categories: {
-          food: true
-        },
+        shared: true,
+        user: "tian",
+        categories: ["food", "blah"],
         amount: 0,
         description: ""
       };
@@ -70,8 +64,44 @@ angular.module('moneystuff')
       return db.ref("transactions").push(transaction);
     }
 
+    function shuffle(array) {
+      var currentIndex = array.length, temporaryValue, randomIndex;
+
+      // While there remain elements to shuffle...
+      while (0 !== currentIndex) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+      }
+
+      return array;
+    }
+
+    var categories = ["food", "games", "rent", "travel", "electronics", "clothes", "discretionary", "books", "snacks", "subscriptions"];
     this.addRandomTransaction = function() {
-      this.saveNewTransaction("2016", getRandomInt(1, 12).toString(), getRandomInt(1, 31).toString(), getRandomInt(1, 9999), "test");
+      var m = getRandomInt(1, 12);
+      var d = getRandomInt(1, 31);
+      var n = getRandomInt(1, 5);
+      var c = shuffle(categories).slice(0, n);
+      var t = {
+        year: 2016,
+        month: getRandomInt(1, 12),
+        day: getRandomInt(1, 31),
+        date: processDate(2016, m, d),
+        shared: getRandomInt(1, 2) == 1,
+        user: getRandomInt(1, 2) == 1 ? "tian" : "joe",
+        categories: c,
+        amount: Math.round(getRandomAmount(1, 9999) * 100) / 100,
+        description: "test " + getRandomInt(1, 999)
+      };
+
+      this.saveNewTransaction(t);
     }
 
     this.deleteTransaction = function(key) {

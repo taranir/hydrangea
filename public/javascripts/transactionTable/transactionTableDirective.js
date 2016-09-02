@@ -13,6 +13,8 @@ app.directive('transactionTable', function () {
         });
     }
 
+    // dataService.addRandomTransaction();
+
     this.initializeNewTransaction = function() {
       var newTransaction = dataService.getNewTransaction();
       $scope.newTransaction = newTransaction;
@@ -22,6 +24,7 @@ app.directive('transactionTable', function () {
     this.initializeNewTransaction();
 
     $scope.addTransaction = function() {
+      $scope.newTransaction.categories = [$scope.newTransaction.categories];
       if ($scope.newTransaction.description.length < 1 ||
           $scope.newTransaction.amount == 0) {
         console.log("description or amount can't be blank")
