@@ -27,6 +27,15 @@ function processDate(year, month, day) {
   return "" + year + pad(month.toString()) + pad(day.toString());
 };
 
+function otherUser(n) {
+  if (n == "tian") {
+    return "joe";
+  }
+  if (n == "joe") {
+    return "tian";
+  }
+}
+
 function aggregateTransactions(transactions) {
   var users = {
     all: {},
@@ -49,7 +58,13 @@ function aggregateTransactions(transactions) {
       if (t.shared) {
         inc("all");
 
-        paid[t.user] += t.amount;
+        if (JSON.stringify(t.categories) == JSON.stringify(['payment'])) {
+          console.log("payment");
+          paid[t.user] += t.amount;
+          paid[otherUser(t.user)] -= t.amount;
+        } else {
+          paid[t.user] += t.amount;
+        }
       }
       inc(t.user);
     }
