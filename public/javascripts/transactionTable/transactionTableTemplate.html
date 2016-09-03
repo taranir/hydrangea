@@ -11,8 +11,8 @@
     <th>Category</th>
     <th></th>
   </tr></thead>
-  <tr>
-    <td class="input-row">
+  <tr class="input-row">
+    <td>
       <div class="ui input">
         <input class="year-input" type="text" ng-keypress="inputKeypress($event)" ng-model="newTransaction.year">
         <input class="month-input" type="text" ng-keypress="inputKeypress($event)" ng-model="newTransaction.month">
@@ -48,7 +48,7 @@
     <td>
       <div class="ui input">
         <input type="text" ng-keypress="inputKeypress($event)" ng-model="newTransaction.categories">
-        <button class="ui button">+</button>
+        <button class="add-button ui button">+</button>
       </div>
     </td>
     <td></td>
