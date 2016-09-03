@@ -9,6 +9,7 @@ body {
   background-color: #FFFFFF;
   height: 100%;
   font-family: 'Merriweather Sans', sans-serif;
+  overflow-x: scroll;
 
     h1 {
       font-family: 'Yeseva One', serif;
@@ -22,25 +23,23 @@ body {
 
   .container {
     display: flex;
-    flex-wrap: nowrap;
 
-    .flex-wrapper {
-      display: flex;
-    }
 
     .view-wrapper {
       padding: 50px;
-      flex-grow: 1;
+      flex: 1;
+      min-height: 100%;
     }
 
     .piggy-wrapper {
-      width: @piggyWidth;
-      height: 100%;
+      flex: 0 0 12em;
+      border: 1px solid @platinum;
     }
 
     .nav-wrapper {
-      width: @navWidth;
-      height: 100%;
+      order: -1;
+      flex: 0 0 12em;
+      background-color: @gunmetal;
     }
   }
 }
