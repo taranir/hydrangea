@@ -27,7 +27,6 @@ app.directive('piggy', function () {
     };
 
     $scope.transactionsChanged = function() {
-      console.log("transactions changed");
       if ($scope.transactionArray && $scope.currentBudget) {
         // update aggregates
         var aggregates = aggregateTransactionsForMonth($scope.transactionArray, $scope.currentMonth);

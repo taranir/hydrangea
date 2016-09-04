@@ -1,6 +1,5 @@
 var app = angular.module('moneystuff');
 
-
 app.directive('transactionTable', ['dataService', function (dataService) {
   var controller = ['$scope', 'dataService', function ($scope, dataService) {
     $scope.addTransaction = function() {
@@ -18,8 +17,20 @@ app.directive('transactionTable', ['dataService', function (dataService) {
 
     $scope.renderDate = renderDate;
 
-    $scope.deleteTransaction = function(key) {
-      dataService.deleteTransaction(key);
+    $scope.deleteConfirmation = function(key) {
+      $scope.transactionToDelete = $scope.transactionArray.$getRecord(key);
+      $scope.keyToDelete = key;
+      $('#delete-transaction-modal').modal('show');
+    };
+
+    $scope.deleteTransaction = function() {
+      dataService.deleteTransaction($scope.keyToDelete);
+      $scope.resetDelete();
+    };
+
+    $scope.resetDelete = function() {
+      $scope.transactionToDelete = dataService.getNewTransaction();
+      $scope.keyToDelete = null;
     };
   }];
 

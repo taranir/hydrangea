@@ -29,10 +29,12 @@ function processDate(year, month, day) {
 
 // Convert YYYYMMDD to MM/DD/YYYY
 function renderDate(dateString) {
-  dateString = dateString.toString();
-  return dateString.substring(4, 6) + "/"
-    + dateString.substring(6) + "/"
-    + dateString.substring(0, 4);
+  if (dateString) {
+    dateString = dateString.toString();
+    return dateString.substring(4, 6) + "/"
+      + dateString.substring(6) + "/"
+      + dateString.substring(0, 4);
+  }
 }
 
 function otherUser(n) {
