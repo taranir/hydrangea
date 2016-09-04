@@ -1,7 +1,39 @@
 var app = angular.module('moneystuff');
 
-app.directive('transactionTable', ['dataService', function (dataService) {
+app.directive('transactionTable', ['dataService',  function (dataService, $filter) {
   var controller = ['$scope', 'dataService', function ($scope, dataService) {
+    
+  }];
+
+  var link = function($scope, element, attrs, controller, transcludeFn) {
+    this.init = function() {
+      $scope.userFilter = false;
+      $scope.dateFilter = false;
+      $scope.categoryFilter = false;
+      $scope.transactionArray = dataService.getAllTransactionsFBArray();
+      $scope.transactionArray.$loaded()
+        .then(function() {
+          console.log($scope.transactionArray);
+        })
+        .catch(function(error) {
+          console.log("error fetching transactions", error)
+        });
+    }
+
+    this.initializeNewTransaction = function() {
+      var newTransaction = dataService.getNewTransaction();
+      $scope.newTransaction = newTransaction;
+    }
+
+    this.init();
+    this.initializeNewTransaction();
+
+    $scope.inputKeypress = function(event) {
+      if (event.keyCode === 13) {
+        $scope.addTransaction();
+      }
+    }
+
     $scope.addTransaction = function() {
       if ($scope.newTransaction.categories.length < 1) {
         console.log("Categories can't be blank");
@@ -32,52 +64,16 @@ app.directive('transactionTable', ['dataService', function (dataService) {
       $scope.transactionToDelete = dataService.getNewTransaction();
       $scope.keyToDelete = null;
     };
-  }];
 
-  var link = function($scope, element, attrs, controller, transcludeFn) {
-    this.init = function() {
-      $scope.transactionArray = dataService.getAllTransactionsFBArray();
-      $scope.transactionArray.$loaded()
-        .then(function() {
-          console.log($scope.transactionArray);
-          // filter by attrs
-          if ($scope.userFilter) {
-
-          }
-          if ($scope.dateFilter) {
-
-          }
-          if ($scope.categoryFilter) {
-
-          }
-        })
-        .catch(function(error) {
-          console.log("error fetching transactions", error)
-        });
-    }
-
-    this.initializeNewTransaction = function() {
-      var newTransaction = dataService.getNewTransaction();
-      $scope.newTransaction = newTransaction;
-    }
-
-    $scope.inputKeypress = function(event) {
-      if (event.keyCode === 13) {
-        $scope.addTransaction();
+    $scope.filterTransactions = function() {
+      if ($scope.userFilter) {
       }
-    }
+    };
 
-    this.init();
-    this.initializeNewTransaction();
   };
 
   return {
     restrict: 'E', //Default in 1.3+
-    scope: {
-      userFilter: '=',
-      dateFilter: '=',
-      categoryFilter: '='
-    },
     controller: controller,
     link: link,
     templateUrl: 'javascripts/transactionTable/transactionTableTemplate.html'
