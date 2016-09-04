@@ -27,6 +27,14 @@ function processDate(year, month, day) {
   return "" + year + pad(month.toString()) + pad(day.toString());
 };
 
+// Convert YYYYMMDD to MM/DD/YYYY
+function renderDate(dateString) {
+  dateString = dateString.toString();
+  return dateString.substring(4, 6) + "/"
+    + dateString.substring(6) + "/"
+    + dateString.substring(0, 4);
+}
+
 function otherUser(n) {
   if (n == "tian") {
     return "joe";

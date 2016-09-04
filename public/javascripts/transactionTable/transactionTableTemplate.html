@@ -1,11 +1,9 @@
-<div id="button-row">
-  <button id="add-button" class="ui button" ng-click="addTransaction()">Add Transaction</button>
-</div>
+
 <table class="transaction-table ui single line celled table">
   <thead><tr>
     <th>Date</th>
     <th>Shared</th>
-    <th>User</th>
+    <th>Paid by</th>
     <th>Description</th>
     <th>Amount</th>
     <th>Category</th>
@@ -19,22 +17,32 @@
         <input class="day-input" type="text" ng-keypress="inputKeypress($event)" ng-model="newTransaction.day">
       </div>
     </td>
-    <td>
-      <label>
+    <!-- Shared input -->
+    <td class="text-center">
+      <div class="ui checkbox">
         <input type="checkbox" ng-model="newTransaction.shared">
-        Shared
-      </label><br/>
+      </div>
     </td>
+    <!-- Paid by input -->
     <td>
-      <label>
-        <input type="radio" ng-model="newTransaction.user" value="joe">
-        Joe
-      </label><br/>
-      <label>
-        <input type="radio" ng-model="newTransaction.user" value="tian">
-        Tian
-      </label><br/>
+      <div class="ui form">
+        <div class="grouped fields">
+          <div class="field">
+            <div class="ui radio checkbox">
+              <input type="radio" ng-model="newTransaction.user" name="user" value="joe">
+              <label>Joe</label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui radio checkbox">
+              <input type="radio" ng-model="newTransaction.user" name="user" value="tian">
+              <label>Tian</label>
+            </div>
+          </div>
+        </div>
+      </div>
     </td>
+
     <td>
       <div class="ui input">
         <input type="text" ng-keypress="inputKeypress($event)" ng-model="newTransaction.description">
@@ -48,21 +56,34 @@
     <td>
       <div class="ui input">
         <input type="text" ng-keypress="inputKeypress($event)" ng-model="newTransaction.categories">
-        <button class="add-button ui button">+</button>
+        
       </div>
     </td>
-    <td></td>
-  </tr>
+    <td><button ng-click="addTransaction()" class="add-button positive ui button">+</button></td>
+  </tr> <!-- input row -->
+
   <tr ng-repeat="transaction in transactionArray | orderBy:'-date'">
-    <td>{{transaction.date}}</td>
-    <td>{{transaction.shared}}</td>
-    <td>{{transaction.user}}</td>
+    <td>{{renderDate(transaction.date)}}</td>
+
+    <!-- Shared -->
+    <td class="text-center">
+      <div class="shared" ng-show="{{!transaction.shared}}"><i class="fa fa-times" aria-hidden="true"></i></div>
+    </td>
+
+    <!-- Paid by -->
+    <td class="text-center">
+      <div class="tag tian-tag" ng-show="{{transaction.user=='tian'}}">Tian</div>
+      <div class="tag joe-tag" ng-show="{{transaction.user=='joe'}}">Joe</div>
+    </td>
+
     <td>{{transaction.description}}</td>
-    <td>{{transaction.amount}}</td>
-    <td>{{transaction.categories}}</td>
+    <td>${{transaction.amount}}</td>
+    
+    <!-- Category -->
+    <td><span class="tag category-tag" ng-repeat="category in transaction.categories | orderBy: 'category'">{{category}}</span></td>
     <td>
-      <button class="ui icon button" ng-click="deleteTransaction(transaction.$id)">
-        <i class="ban icon"></i>
+      <button class="ui basic button delete-button" ng-click="deleteTransaction(transaction.$id)">
+        <i class="fa fa-times" aria-hidden="true"></i>
       </button>
     </td>
   </tr>

@@ -1,11 +1,20 @@
-  #button-row {
-    padding-right: 20px;
-    padding-left: 20px;
-    text-align: right;
-    width: 100%;
-  }
+@import "variables.less";
+
 
 .transaction-table {
+
+  .add-button, .delete-button {
+    padding: 6px 10px;
+  } 
+
+  .delete-button {
+    border-width: 0;
+    box-shadow: none !important;
+  }
+
+  .delete-button:hover {
+    color: @negative !important;
+  }
 
   .input-row {
     padding: 5px;
@@ -28,8 +37,40 @@
       width: 40px; 
     }
 
+    .amount-input {
+      width: 90px;
+    }
+
     input {
       padding: 8px;
     }
+  }
+
+  .tag {
+    text-align: center;
+    margin: 3px;
+    padding: 6px;
+    border-radius: 2px;
+    color: @licorice;
+    font-size: 80%;
+    cursor: pointer;
+  }
+
+  .tian-tag {
+    background-color: @lavender;
+    color: white;
+  }
+
+  .joe-tag {
+    background-color: @cerulean;
+    color: white;
+  }
+
+  .category-tag {
+    background-color: @platinum;
+  }
+
+  .shared {
+    color: @gunmetal; 
   }
 }
