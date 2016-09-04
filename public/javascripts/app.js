@@ -12,7 +12,7 @@ angular
         template: '<transaction-table></transaction-table>',
       })
       .when('/summary', {
-        template: '<transaction-table></transaction-table>',
+        template: '<summary></summary>',
       })
       .when('/settings', {
         template: '<settings></settings>',
