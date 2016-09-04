@@ -67,7 +67,6 @@ function aggregateTransactions(transactions) {
         inc("all");
 
         if (JSON.stringify(t.categories) == JSON.stringify(['payment'])) {
-          console.log("payment");
           paid[t.user] += t.amount;
           paid[otherUser(t.user)] -= t.amount;
         } else {

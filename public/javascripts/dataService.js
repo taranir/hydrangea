@@ -53,7 +53,7 @@ angular.module('moneystuff')
         date: processDate(today.getFullYear(), today.getMonth() + 1, today.getDate()),
         shared: true,
         user: "tian",
-        categories: ["food", "blah"],
+        categories: "",
         amount: 0,
         description: ""
       };

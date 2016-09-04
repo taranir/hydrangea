@@ -4,25 +4,19 @@ var app = angular.module('moneystuff');
 app.directive('transactionTable', ['dataService', function (dataService) {
   var controller = ['$scope', 'dataService', function ($scope, dataService) {
     $scope.addTransaction = function() {
-      $scope.newTransaction.categories = [$scope.newTransaction.categories];
-      if ($scope.newTransaction.description.length < 1 ||
+      if ($scope.newTransaction.categories.length < 1) {
+        console.log("Categories can't be blank");
+      } else if ($scope.newTransaction.description.length < 1 ||
           $scope.newTransaction.amount == 0) {
-        console.log("description or amount can't be blank")
+        console.log("description or amount can't be blank");
       } else {
+        $scope.newTransaction.categories = $scope.newTransaction.categories.split(",");
         dataService.saveNewTransaction($scope.newTransaction);
         $scope.newTransaction = dataService.getNewTransaction();
       }
     }
 
     $scope.renderDate = renderDate;
-
-    // $scope.getAmountTotal = function() {
-    //   return $scope.transactionArray.map(function(t) {
-    //     return t.amount;
-    //   }).reduce(function(a1, a2) {
-    //     return a1 + a2;
-    //   }, 0);
-    // };
 
     $scope.deleteTransaction = function(key) {
       dataService.deleteTransaction(key);
@@ -35,7 +29,7 @@ app.directive('transactionTable', ['dataService', function (dataService) {
       $scope.transactionArray.$loaded()
         .then(function() {
           console.log($scope.transactionArray);
-          // filter by attrs 
+          // filter by attrs
           if ($scope.userFilter) {
 
           }
