@@ -55,11 +55,9 @@
     <option value="tian">Tian</option>
     <option value="joe">Joe</option>
   </select>
-
-  <button ng-click="filterTransactions()" class="ui basic button">Filter</button>
 </div>
 
-<!-- TRANSACTIONS////////////////////////////////////////////////////////////--> 
+<!-- TRANSACTIONS////////////////////////////////////////////////////////////-->
 
 
   <table class="transaction-table ui single line celled table">
@@ -126,7 +124,7 @@
       <td><button ng-click="addTransaction()" class="add-button positive ui button">+</button></td>
     </tr> <!-- input row -->
 
-    <tr ng-repeat="transaction in transactionArray | orderBy:'-date'">
+    <tr ng-repeat="transaction in transactionArray | orderBy:'-date'" ng-if="shouldShowTransaction(transaction)">
       <td>{{renderDate(transaction.date)}}</td>
 
       <!-- Shared -->

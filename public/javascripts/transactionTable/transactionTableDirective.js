@@ -2,7 +2,7 @@ var app = angular.module('moneystuff');
 
 app.directive('transactionTable', ['dataService',  function (dataService, $filter) {
   var controller = ['$scope', 'dataService', function ($scope, dataService) {
-    
+
   }];
 
   var link = function($scope, element, attrs, controller, transcludeFn) {
@@ -65,11 +65,14 @@ app.directive('transactionTable', ['dataService',  function (dataService, $filte
       $scope.keyToDelete = null;
     };
 
-    $scope.filterTransactions = function() {
-      if ($scope.userFilter) {
+    $scope.shouldShowTransaction = function(transaction) {
+      if ($scope.userFilter != "") {
+        if (transaction.user != $scope.userFilter) {
+          return false;
+        }
       }
+      return true;
     };
-
   };
 
   return {
