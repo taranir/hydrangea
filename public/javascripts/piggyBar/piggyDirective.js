@@ -47,6 +47,48 @@ app.directive('piggy', function () {
         $scope.budgetArray.$save($scope.currentbudget);
         // dataService.saveBudget($scope.currentBudget);
         // $scope.currentBudget.$save();
+        $scope.updateProgressBars();
+      }
+    };
+
+// {
+//     "all": {
+//         "categories": {
+//             "food": [5432, 1234, 123],
+//             "travel": [2356, 0, 0]
+//         },
+//         "rollover": {
+//             "food": true
+//         }
+//     },
+//     "date": "201609",
+//     "joe": {
+//         "categories": {
+//             "electronics": [1234, 0, 0],
+//             "games": [321, 12, 0]
+//         },
+//         "rollover": {
+//             "games": true
+//         }
+//     },
+//     "tian": {
+//         "categories": {
+//             "discretionary": [1335, 0, 0]
+//         }
+//     },
+//     "$id": "201609",
+//     "$priority": null
+// }
+
+    $scope.updateProgressBars = function() {
+      for (var user in {"all": 1, "tian": 1, "joe": 1}) {
+        for (var category in $scope.currentBudget[user]["categories"]) {
+          var values = $scope.currentBudget[user]["categories"][category];
+          var selector = "#" + user + "-" + category + "-progress";
+          var bar = $(selector);
+          bar.progress("set total", values[0]);
+          bar.progress("set progress", values[2]);
+        }
       }
     };
 

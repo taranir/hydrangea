@@ -139,7 +139,7 @@
       </td>
 
       <td>{{transaction.description}}</td>
-      <td>${{transaction.amount}}</td>
+      <td><pre>{{padAmount(transaction.amount)}}</pre></td>
 
       <!-- Category -->
       <td><span class="tag category-tag" ng-repeat="category in transaction.categories | orderBy: 'category'">{{category}}</span></td>

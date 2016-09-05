@@ -98,6 +98,8 @@ function updateBudget(budget, aggregates) {
       if (user in aggregates) {
         if (category in aggregates[user]) {
           userBudget.categories[category][2] = aggregates[user][category];
+        } else {
+          userBudget.categories[category][2] = 0;
         }
       }
     }

@@ -6,7 +6,7 @@
     </div> -->
     <h2>Combined:</h2>
     <div ng-repeat="(category, amounts) in currentBudget.all.categories">
-      <div class="ui progress combined-progress" id="combined-{{category}}-progress">
+      <div class="ui progress all-progress" id="all-{{category}}-progress">
         <div class="bar"><div class="progress"></div></div>
         <div class="label">{{category}}: ${{amounts[2]}} of ${{amounts[0]}}</div>
       </div>

@@ -56,7 +56,8 @@ app.directive('transactionTable', ['dataService',  function (dataService, $filte
     };
 
     $scope.deleteTransaction = function() {
-      dataService.deleteTransaction($scope.keyToDelete);
+      $scope.transactionArray.$remove($scope.transactionArray.$getRecord($scope.keyToDelete));
+      // dataService.deleteTransaction($scope.keyToDelete);
       $scope.resetDelete();
     };
 
@@ -72,6 +73,11 @@ app.directive('transactionTable', ['dataService',  function (dataService, $filte
         }
       }
       return true;
+    };
+
+    $scope.padAmount = function(a) {
+      var s = '$' + a.toFixed(2);
+      return (Array(12).join(" ") + s).substring(s.length);
     };
   };
 
