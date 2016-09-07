@@ -80,9 +80,31 @@
       </td>
       <!-- Shared input -->
       <td class="text-center">
-        <div class="ui checkbox">
+        <!-- <div class="ui checkbox">
           <input type="checkbox" name="shared" ng-model="newTransaction.shared">
           <label></label>
+        </div> -->
+        <div class="ui form">
+          <div class="grouped fields">
+            <div class="field">
+              <div class="ui radio checkbox">
+                <input type="radio" ng-model="newTransaction.isfor" name="isfor" value="self">
+                <label>Self</label>
+              </div>
+            </div>
+            <div class="field">
+              <div class="ui radio checkbox">
+                <input type="radio" ng-model="newTransaction.isfor" name="isfor" value="shared">
+                <label>Shared</label>
+              </div>
+            </div>
+            <div class="field">
+              <div class="ui radio checkbox">
+                <input type="radio" ng-model="newTransaction.isfor" name="isfor" value="other">
+                <label>Other</label>
+              </div>
+            </div>
+          </div>
         </div>
       </td>
       <!-- Paid by input -->
@@ -129,7 +151,10 @@
 
       <!-- Shared -->
       <td class="text-center">
-        <div class="shared" ng-show="{{!transaction.shared}}"><i class="fa fa-times" aria-hidden="true"></i></div>
+        <div class="tag self-tag" ng-show="{{transaction.isfor=='self'}}">Self</div>
+        <div class="tag shared-tag" ng-show="{{transaction.isfor=='shared'}}">Shared</div>
+        <div class="tag other-tag" ng-show="{{transaction.isfor=='other'}}">Other</div>
+        <!-- <div class="shared" ng-show="{{!transaction.shared}}"><i class="fa fa-times" aria-hidden="true"></i></div> -->
       </td>
 
       <!-- Paid by -->

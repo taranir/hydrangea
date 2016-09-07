@@ -52,7 +52,7 @@ function aggregateTransactions(transactions) {
     tian: {},
     joe: {}
   };
-  var paid = {
+  var owes = {
     tian: 0,
     joe: 0
   };
@@ -65,20 +65,26 @@ function aggregateTransactions(transactions) {
         users[p][category] = (users[p][category] || 0) + t.amount;
       }
 
-      if (t.shared) {
+      if (t.isfor == "shared") {
         inc("all");
 
         if (JSON.stringify(t.categories) == JSON.stringify(['payment'])) {
-          paid[t.user] += t.amount;
-          paid[otherUser(t.user)] -= t.amount;
+          owes[t.user] -= t.amount;
+          // paid[t.user] += t.amount;
+          // paid[otherUser(t.user)] -= t.amount;
         } else {
-          paid[t.user] += t.amount;
+          owes[otherUser(t.user)] += t.amount / 2.0;
+          // paid[t.user] += t.amount;
         }
+      } else if (t.isfor == "self") {
+        inc(t.user);
+      } else if (t.isfor == "other") {
+        inc(otherUser(t.user));
+        owes[otherUser(t.user)] += t.amount;
       }
-      inc(t.user);
     }
   }
-  return [users, paid];
+  return [users, owes];
 };
 
 function aggregateTransactionsForMonth(transactions, currentMonth) {

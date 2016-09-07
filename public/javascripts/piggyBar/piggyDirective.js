@@ -31,12 +31,15 @@ app.directive('piggy', function () {
         // update aggregates
         var aggregates = aggregateTransactionsForMonth($scope.transactionArray, $scope.currentMonth);
 
-        $scope.paid = aggregates[1];
-        var jot = $scope.paid.tian - $scope.paid.joe;
+        $scope.owes = aggregates[1];
+        $scope.monthTotals = aggregates[0];
+        var jot = $scope.owes.joe - $scope.owes.tian;
+
+        // var jot = $scope.paid.tian - $scope.paid.joe;
         if (jot > 0) {
-          $scope.paidText = "Joe owes Tian " + jot/2.0;
+          $scope.paidText = "Joe owes Tian " + jot.toFixed(2);
         } else if (jot < 0) {
-          $scope.paidText = "Tian owes Joe " + jot/-2.0;
+          $scope.paidText = "Tian owes Joe " + (-1 * jot).toFixed(2);
         } else {
           $scope.paidText = "All good";
         }
