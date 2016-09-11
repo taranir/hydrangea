@@ -5,21 +5,21 @@
     <!-- <div ng-repeat="(user, title) in [['all', 'Combined'], ['tian', 'Tian'], ['joe', 'Joe']]">
     </div> -->
     <h2>Combined:</h2>
-    <div ng-repeat="(category, amounts) in currentBudget.all.categories">
+    <div ng-repeat="(category, amounts) in currentBudget.all">
       <div class="ui progress all-progress" id="all-{{category}}-progress">
         <div class="bar"><div class="progress"></div></div>
         <div class="label">{{category}}: ${{amounts[2]}} of ${{amounts[0]}}</div>
       </div>
     </div>
     <h2>Tian:</h2>
-    <div ng-repeat="(category, amounts) in currentBudget.tian.categories">
+    <div ng-repeat="(category, amounts) in currentBudget.tian">
       <div class="ui progress tian-progress" id="tian-{{category}}-progress">
         <div class="bar"><div class="progress"></div></div>
         <div class="label">{{category}}: ${{amounts[2]}} of ${{amounts[0]}}</div>
       </div>
     </div>
     <h2>Joe:</h2>
-    <div ng-repeat="(category, amounts) in currentBudget.joe.categories">
+    <div ng-repeat="(category, amounts) in currentBudget.joe">
       <div class="ui progress joe-progress" id="joe-{{category}}-progress">
         <div class="bar"><div class="progress"></div></div>
         <div class="label">{{category}}: ${{amounts[2]}} of ${{amounts[0]}}</div>

@@ -13,7 +13,7 @@ app.directive('transactionTable', ['dataService',  function (dataService, $filte
       $scope.transactionArray = dataService.getAllTransactionsFBArray();
       $scope.transactionArray.$loaded()
         .then(function() {
-          console.log($scope.transactionArray);
+          console.log("loaded transactions");
         })
         .catch(function(error) {
           console.log("error fetching transactions", error)
@@ -41,7 +41,7 @@ app.directive('transactionTable', ['dataService',  function (dataService, $filte
           $scope.newTransaction.amount == 0) {
         console.log("description or amount can't be blank");
       } else {
-        $scope.newTransaction.categories = $scope.newTransaction.categories.split(",");
+        $scope.newTransaction.categories = $scope.newTransaction.categories.split(",").map(function(s) { return s.trim(); });
         dataService.saveNewTransaction($scope.newTransaction);
         $scope.newTransaction = dataService.getNewTransaction();
       }

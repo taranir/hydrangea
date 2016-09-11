@@ -12,6 +12,13 @@ app.directive('piggy', function () {
 
           if ($scope.currentBudget.date != $scope.currentMonth) {
             console.log("wrong month, do something");
+            var newBudget = getNewBudget($scope.currentBudget, $scope.currentMonth);
+            console.log("got new budget");
+            console.log(newBudget);
+            console.log("saving new budget");
+            dataService.saveNewBudget(newBudget);
+            $scope.currentBudget = $scope.budgetArray[$scope.budgetArray.length -1];
+            console.log("new current budget date: " + $scope.currentBudget.date);
           }
         }).catch(function(error) {
           console.log("error fetching budgets", error);
@@ -21,6 +28,7 @@ app.directive('piggy', function () {
       $scope.transactionArray.$loaded()
         .then(function() {
           $scope.transactionsChanged();
+          setTimeout(function(){ $scope.updateProgressBars(); }, 500);
         }).catch(function(error) {
           console.log("error fetching transactions", error)
         });
@@ -44,49 +52,16 @@ app.directive('piggy', function () {
           $scope.paidText = "All good";
         }
 
-        // recalculate current budget
         updateBudget($scope.currentBudget, aggregates[0]);
-        // save current budget
-        $scope.budgetArray.$save($scope.currentbudget);
-        // dataService.saveBudget($scope.currentBudget);
-        // $scope.currentBudget.$save();
+        $scope.budgetArray.$save($scope.budgetArray.$getRecord($scope.currentBudget.$id));
         $scope.updateProgressBars();
       }
     };
 
-// {
-//     "all": {
-//         "categories": {
-//             "food": [5432, 1234, 123],
-//             "travel": [2356, 0, 0]
-//         },
-//         "rollover": {
-//             "food": true
-//         }
-//     },
-//     "date": "201609",
-//     "joe": {
-//         "categories": {
-//             "electronics": [1234, 0, 0],
-//             "games": [321, 12, 0]
-//         },
-//         "rollover": {
-//             "games": true
-//         }
-//     },
-//     "tian": {
-//         "categories": {
-//             "discretionary": [1335, 0, 0]
-//         }
-//     },
-//     "$id": "201609",
-//     "$priority": null
-// }
-
     $scope.updateProgressBars = function() {
       for (var user in {"all": 1, "tian": 1, "joe": 1}) {
-        for (var category in $scope.currentBudget[user]["categories"]) {
-          var values = $scope.currentBudget[user]["categories"][category];
+        for (var category in $scope.currentBudget[user]) {
+          var values = $scope.currentBudget[user][category];
           var selector = "#" + user + "-" + category + "-progress";
           var bar = $(selector);
           bar.progress("set total", values[0]);
@@ -97,6 +72,10 @@ app.directive('piggy', function () {
 
     $scope.$watch('transactionArray',function(newVal,oldVal){
       $scope.transactionsChanged();
+    }, true);
+
+    $scope.$watch('budgetArray',function(newVal,oldVal){
+      console.log("budget array changed");
     }, true);
 
     this.init();

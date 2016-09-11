@@ -42,7 +42,7 @@ angular.module('moneystuff')
         .orderByChild("date")
         .startAt(processDate(sy, sm, sd))
         .endAt(processDate(ey, em, ed)));
-    }
+    };
 
     this.getNewTransaction = function() {
       var today = new Date();
@@ -62,7 +62,7 @@ angular.module('moneystuff')
     this.saveNewTransaction = function(transaction) {
       transaction.date = processDate(parseInt(transaction.year), parseInt(transaction.month), parseInt(transaction.day));
       return db.ref("transactions").push(transaction);
-    }
+    };
 
     function shuffle(array) {
       var currentIndex = array.length, temporaryValue, randomIndex;
@@ -81,7 +81,7 @@ angular.module('moneystuff')
       }
 
       return array;
-    }
+    };
 
     var categories = ["food", "games", "rent", "travel", "electronics", "clothes", "discretionary", "books", "snacks", "subscriptions"];
     this.addRandomTransaction = function() {
@@ -102,11 +102,11 @@ angular.module('moneystuff')
       };
 
       this.saveNewTransaction(t);
-    }
+    };
 
     this.deleteTransaction = function(key) {
       db.ref("transactions/" + key).remove();
-    }
+    };
 
     this.updateTransaction = function(key, transaction) {
       db.ref("transactions/" + key).set(transaction);
@@ -120,99 +120,12 @@ angular.module('moneystuff')
     // Budgets //
     /////////////
 
-    // {
-    //   date: "201605", // null for proposed
-    //   joe: {
-    //     categories: {
-    //       games: [321, 12, 0], // [proposed, from rollover, actual]
-    //       electronics: [1234, 0, 142],
-    //     }
-    //     rollover: {
-    //       games: true
-    //     }
-    //   },
-    //   tian: {
-    //     categories: {
-    //       discretionary: [1335, 0, 0],
-    //     }
-    //     rollover: {}
-    //   },
-    //   all: {
-    //     categories: {
-    //       food: [5432, 143, 513],
-    //       travel: [2356, 0, 0],
-    //     }
-    //     rollover: {
-    //       food: true
-    //     }
-    //   }
-    // }
-
     this.getAllBudgetsFBArray = function() {
       return $firebaseArray(db.ref("budgets")
         .orderByChild("date"));
     };
 
-    this.getProposedBudgetFBObj = function() {
-      return $firebaseObject(db.ref("/proposed"));
-    };
-
-    this.saveProposedBudget = function(proposed) {
-      return db.ref("/proposed").set(proposed);
-    }
-
-    this.getEmptyBudget = function() {
-      return {
-        joe: {
-          categories: {
-            games: [321, 12, 0], // [proposed, from rollover, actual]
-            electronics: [1234, 0, 142],
-          },
-          rollover: {
-            games: true
-          }
-        },
-        tian: {
-          categories: {
-            discretionary: [1335, 0, 0],
-          },
-          rollover: {}
-        },
-        all: {
-          categories: {
-            food: [5432, 143, 513],
-            travel: [2356, 0, 0],
-          },
-          rollover: {
-            food: true
-          }
-        }
-      };
-    };
-
-    this.getNewBudget = function(lastBudget, proposedBudget, newDate) {
-      var newBudget = JSON.parse(JSON.stringify(proposedBudget));
-      for (var user in newBudget) {
-        var userBudget = newBudget[user];
-
-        for (var category in userBudget["categories"]) {
-          if (userBudget["rollover"][category]) {
-            var result = lastBudget[user]["categories"][category];
-            if (result) {
-              // proposed + from rollover - actual
-              var rollover = result[0] + result[1] - result[2];
-              userBudget["categories"][category][1] = rollover;
-            }
-          }
-        }
-      }
-      newBudget[date] = newDate;
-      return newBudget;
-    };
-
-    this.saveBudget = function(budget) {
-      console.log("saving budget:");
-      console.log(budget);
+    this.saveNewBudget = function(budget) {
       return db.ref("budgets/" + budget.date).set(budget);
     };
 

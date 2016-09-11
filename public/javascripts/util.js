@@ -14,6 +14,10 @@ function getMonth(date) {
   return date.getFullYear().toString() + pad((date.getMonth() + 1).toString())
 };
 
+function round(f) {
+  return parseFloat(f.toFixed(2));
+};
+
 function processDate(year, month, day) {
   if (!year) {
     year = new Date().getFullYear().toString();
@@ -84,6 +88,15 @@ function aggregateTransactions(transactions) {
       }
     }
   }
+
+  for (var u in users) {
+    for (var c in users[u]) {
+      users[u][c] = round(users[u][c]);
+    }
+  }
+  owes['tian'] = round(owes['tian']);
+  owes['joe'] = round(owes['joe']);
+
   return [users, owes];
 };
 
@@ -94,20 +107,55 @@ function aggregateTransactionsForMonth(transactions, currentMonth) {
   return aggregateTransactions(filteredTransactions);
 };
 
+// {
+//   date: "201605"
+//   joe: {
+//     games: [321, 12, 0, true], // [proposed, from rollover, actual, rollover]
+//     electronics: [1234, 0, 142, false],
+//   },
+//   tian: {
+//     discretionary: [1335, 0, 0],
+//   },
+//   all: {
+//     food: [5432, 143, 513],
+//     travel: [2356, 0, 0],
+//   }
+// }
+
 function updateBudget(budget, aggregates) {
   for (var user in budget) {
     if (user == "date" || user[0] == "$") {
       continue;
     }
     var userBudget = budget[user];
-    for (var category in userBudget.categories) {
+    for (var category in userBudget) {
       if (user in aggregates) {
         if (category in aggregates[user]) {
-          userBudget.categories[category][2] = aggregates[user][category];
+          userBudget[category][2] = aggregates[user][category];
         } else {
-          userBudget.categories[category][2] = 0;
+          userBudget[category][2] = 0;
         }
       }
     }
   }
+};
+
+function getNewBudget(lastBudget, newDate) {
+  var newBudget = JSON.parse(JSON.stringify(lastBudget));
+  for (var user in newBudget) {
+    var uBudget = newBudget[user];
+    for (var category in uBudget) {
+      var cBudget = uBudget[category];
+      cBudget[2] = 0;
+      if (cBudget[3]) {
+        var result = lastBudget[user][category];
+        var rollover = result[0] + result[1] - result[2];
+        cBudget[1] = rollover;
+      }
+    }
+  }
+  newBudget["date"] = newDate;
+  delete newBudget["$id"];
+  delete newBudget["$priority"];
+  return newBudget;
 };

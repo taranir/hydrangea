@@ -2,8 +2,8 @@ var app = angular.module('moneystuff');
 app.directive('settings', function () {
   var controller = ['$scope', 'dataService', function ($scope, dataService) {
     function init() {
-      $scope.transactionArray = dataService.getAllTransactionsFBArray();
-      $scope.proposedBudget = dataService.getProposedBudgetFBObj();
+      // $scope.transactionArray = dataService.getAllTransactionsFBArray();
+      // $scope.proposedBudget = dataService.getProposedBudgetFBObj();
     }
     init();
 
