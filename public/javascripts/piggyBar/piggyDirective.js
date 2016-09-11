@@ -8,14 +8,9 @@ app.directive('piggy', function () {
       $scope.budgetArray.$loaded()
         .then(function() {
           $scope.currentBudget = $scope.budgetArray[$scope.budgetArray.length -1];
-          console.log("got initial current budget");
 
           if ($scope.currentBudget.date != $scope.currentMonth) {
-            console.log("wrong month, do something");
             var newBudget = getNewBudget($scope.currentBudget, $scope.currentMonth);
-            console.log("got new budget");
-            console.log(newBudget);
-            console.log("saving new budget");
             dataService.saveNewBudget(newBudget);
             $scope.currentBudget = $scope.budgetArray[$scope.budgetArray.length -1];
             console.log("new current budget date: " + $scope.currentBudget.date);
@@ -75,7 +70,7 @@ app.directive('piggy', function () {
     }, true);
 
     $scope.$watch('budgetArray',function(newVal,oldVal){
-      console.log("budget array changed");
+      // console.log("budget array changed");
     }, true);
 
     this.init();
