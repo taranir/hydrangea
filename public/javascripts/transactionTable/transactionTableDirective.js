@@ -7,12 +7,13 @@ app.directive('transactionTable', ['dataService',  function (dataService, $filte
 
   var link = function($scope, element, attrs, controller, transcludeFn) {
     this.init = function() {
-      $scope.userFilter = false;
-      $scope.dateFilter = false;
-      $scope.categoryFilter = false;
+      $scope.userFilter = "";
+      $scope.dateFilter = "";
+      $scope.categoryFilter = "";
       $scope.transactionArray = dataService.getAllTransactionsFBArray();
       $scope.transactionArray.$loaded()
         .then(function() {
+          $scope.transactionsChanged();
           console.log("loaded transactions");
         })
         .catch(function(error) {
@@ -72,12 +73,32 @@ app.directive('transactionTable', ['dataService',  function (dataService, $filte
           return false;
         }
       }
+      if ($scope.categoryFilter != "") {
+        if (transaction.categories.indexOf($scope.categoryFilter) == -1) {
+          return false;
+        }
+      }
       return true;
     };
 
     $scope.padAmount = function(a) {
       var s = '$' + a.toFixed(2);
       return (Array(12).join(" ") + s).substring(s.length);
+    };
+
+    $scope.$watch('transactionArray',function(newVal,oldVal){
+      $scope.transactionsChanged();
+    }, true);
+
+    $scope.transactionsChanged = function() {
+      console.log("transactions changed");
+      var allCategories = {};
+      angular.forEach($scope.transactionArray, function(t) {
+        angular.forEach(t.categories, function(c) {
+          allCategories[c] = true;
+        });
+      });
+      $scope.allCategories = Object.keys(allCategories);
     };
   };
 

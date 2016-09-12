@@ -55,6 +55,11 @@
     <option value="tian">Tian</option>
     <option value="joe">Joe</option>
   </select>
+
+  <select name="categoryFilter" ng-model="categoryFilter" class="ui dropdown" id="categoryFilter">
+    <option ng-repeat="category in allCategories" value="{{category}}">{{category}}
+    </option>
+  </select>
 </div>
 
 <!-- TRANSACTIONS////////////////////////////////////////////////////////////-->
