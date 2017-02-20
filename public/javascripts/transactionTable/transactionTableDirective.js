@@ -10,6 +10,10 @@ app.directive('transactionTable', ['dataService',  function (dataService, $filte
       $scope.userFilter = "";
       $scope.dateFilter = "";
       $scope.categoryFilter = "";
+      $scope.monthFilter = "";
+      $scope.yearFilter = "";
+      $scope.allMonths = getMonthNames();
+      $scope.allMonths.unshift("");
       $scope.transactionArray = dataService.getAllTransactionsFBArray();
       $scope.transactionArray.$loaded()
         .then(function() {
@@ -68,13 +72,24 @@ app.directive('transactionTable', ['dataService',  function (dataService, $filte
     };
 
     $scope.shouldShowTransaction = function(transaction) {
-      if ($scope.userFilter != "") {
-        if (transaction.user != $scope.userFilter) {
+      if ($scope.userFilter !== "") {
+        if (transaction.user !== $scope.userFilter) {
           return false;
         }
       }
-      if ($scope.categoryFilter != "") {
+      if ($scope.categoryFilter !== "") {
         if (transaction.categories.indexOf($scope.categoryFilter) == -1) {
+          return false;
+        }
+      }
+      var date = renderDate(transaction["date"]).split("/");
+      if ($scope.monthFilter !== "") {
+        if (numToMonth(date[0]) !== $scope.monthFilter) {
+          return false;
+        }
+      }
+      if ($scope.yearFilter !== "") {
+        if ((date[2]) != $scope.yearFilter) {
           return false;
         }
       }
@@ -93,12 +108,16 @@ app.directive('transactionTable', ['dataService',  function (dataService, $filte
     $scope.transactionsChanged = function() {
       console.log("transactions changed");
       var allCategories = {};
+      var allYears = {};
       angular.forEach($scope.transactionArray, function(t) {
+        var date = renderDate(t["date"]).split("/");
+        allYears[date[2]] = true;
         angular.forEach(t.categories, function(c) {
           allCategories[c] = true;
         });
       });
       $scope.allCategories = Object.keys(allCategories);
+      $scope.allYears = Object.keys(allYears);
     };
   };
 
