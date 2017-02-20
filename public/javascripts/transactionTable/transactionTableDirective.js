@@ -117,9 +117,17 @@ app.directive('transactionTable', ['dataService',  function (dataService, $filte
         });
       });
       $scope.allCategories = Object.keys(allCategories);
+      $scope.allCategories.unshift("");
       $scope.allYears = Object.keys(allYears);
+      $scope.allYears.unshift("");
+    };
+
+    $scope.setUserFilter = function(user) {
+      $scope.userFilter = user;
     };
   };
+
+
 
   return {
     restrict: 'E', //Default in 1.3+
