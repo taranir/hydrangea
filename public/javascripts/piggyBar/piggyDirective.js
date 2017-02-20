@@ -33,6 +33,7 @@ app.directive('piggy', function () {
       if ($scope.transactionArray && $scope.currentBudget) {
         // update aggregates
         var aggregates = aggregateTransactionsForMonth($scope.transactionArray, $scope.currentMonth);
+        var aggregatesTotal = aggregateTransactions($scope.transactionArray);
 
         $scope.owes = aggregates[1];
         $scope.monthTotals = aggregates[0];
@@ -45,6 +46,18 @@ app.directive('piggy', function () {
           $scope.paidText = "Tian owes Joe " + (-1 * jot).toFixed(2);
         } else {
           $scope.paidText = "All good";
+        }
+
+        $scope.owesTotal = aggregatesTotal[1];
+        var jotTotal = $scope.owesTotal.joe - $scope.owesTotal.tian;
+
+        // var jot = $scope.paid.tian - $scope.paid.joe;
+        if (jotTotal > 0) {
+          $scope.paidTextTotal = "Joe owes Tian Total " + jotTotal.toFixed(2);
+        } else if (jotTotal < 0) {
+          $scope.paidTextTotal = "Tian owes Joe Total " + (-1 * jotTotal).toFixed(2);
+        } else {
+          $scope.paidTextTotal = "All good";
         }
 
         updateBudget($scope.currentBudget, aggregates[0]);
