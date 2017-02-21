@@ -1,14 +1,13 @@
 var app = angular.module('moneystuff');
 
-app.directive('transactionTable', ['dataService',  function (dataService, $filter) {
-  var controller = ['$scope', 'dataService', function ($scope, dataService) {
+app.directive('transactionTable', ['dataService', 'filterService', function (dataService, filterService, $filter) {
+  var controller = ['$scope', 'dataService', 'filterService', function ($scope, dataService, filterService) {
 
   }];
 
   var link = function($scope, element, attrs, controller, transcludeFn) {
     this.init = function() {
       $scope.userFilter = "";
-      $scope.dateFilter = "";
       $scope.categoryFilter = "";
       $scope.monthFilter = "";
       $scope.yearFilter = "";
@@ -32,6 +31,10 @@ app.directive('transactionTable', ['dataService',  function (dataService, $filte
 
     this.init();
     this.initializeNewTransaction();
+
+    $scope.updateFilter = function() {
+      filterService.updateFilters($scope.userFilter, $scope.categoryFilter, $scope.monthFilter, $scope.yearFilter);
+    }
 
     $scope.inputKeypress = function(event) {
       if (event.keyCode === 13) {
@@ -72,28 +75,7 @@ app.directive('transactionTable', ['dataService',  function (dataService, $filte
     };
 
     $scope.shouldShowTransaction = function(transaction) {
-      if ($scope.userFilter !== "") {
-        if (transaction.user !== $scope.userFilter) {
-          return false;
-        }
-      }
-      if ($scope.categoryFilter !== "") {
-        if (transaction.categories.indexOf($scope.categoryFilter) == -1) {
-          return false;
-        }
-      }
-      var date = renderDate(transaction["date"]).split("/");
-      if ($scope.monthFilter !== "") {
-        if (numToMonth(date[0]) !== $scope.monthFilter) {
-          return false;
-        }
-      }
-      if ($scope.yearFilter !== "") {
-        if ((date[2]) != $scope.yearFilter) {
-          return false;
-        }
-      }
-      return true;
+      return filterService.shouldShowTransaction(transaction);
     };
 
     $scope.padAmount = function(a) {
@@ -124,10 +106,9 @@ app.directive('transactionTable', ['dataService',  function (dataService, $filte
 
     $scope.setUserFilter = function(user) {
       $scope.userFilter = user;
+      $scope.updateFilter();
     };
   };
-
-
 
   return {
     restrict: 'E', //Default in 1.3+

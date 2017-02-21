@@ -60,6 +60,10 @@ function numToMonth(num) {
   return numToMonthDict[num];
 }
 
+function monthToNum(month) {
+  return _.invert(numToMonthDict)[month];
+}
+
 function getMonthNames() {
   return _.values(numToMonthDict);
 }
