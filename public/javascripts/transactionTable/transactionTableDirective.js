@@ -51,7 +51,11 @@ app.directive('transactionTable', ['dataService', 'filterService', function (dat
       } else {
         $scope.newTransaction.categories = $scope.newTransaction.categories.split(",").map(function(s) { return s.trim(); });
         dataService.saveNewTransaction($scope.newTransaction);
+        var oldTransaction = $scope.newTransaction;
         $scope.newTransaction = dataService.getNewTransaction();
+        $scope.newTransaction.year = oldTransaction.year;
+        $scope.newTransaction.day = oldTransaction.day;
+        $scope.newTransaction.month = oldTransaction.month;
       }
     }
 

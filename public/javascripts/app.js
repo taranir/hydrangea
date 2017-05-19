@@ -3,7 +3,8 @@
 angular
   .module('moneystuff', [
     'ngRoute',
-    'firebase'
+    'firebase',
+    'chart.js'
   ])
   .config(['$routeProvider', '$locationProvider',
     function($routeProvider, $locationProvider) {
