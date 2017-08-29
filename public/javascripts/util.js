@@ -78,6 +78,23 @@ function otherUser(n) {
 }
 
 function aggregateTransactions(transactions) {
+  // var totals = {};
+  // for (var i = 0; i < transactions.length; i++) {
+  //   var t = transactions[i];
+  //   var ym = t.year + t.month;
+  //   if (!(ym in totals)) {
+  //     totals[ym] = {};
+  //   }
+
+  //   var monthTotals = totals[ym];
+  //   if (!(t.user in monthTotals)) {
+  //     totals[]
+  //   }
+  //   for (var ci in t.categories) {
+  //     var category = t.categories[ci];
+  //   }
+  // }
+
   var users = {
     all: {},
     tian: {},
@@ -96,7 +113,7 @@ function aggregateTransactions(transactions) {
         users[p][category] = (users[p][category] || 0) + t.amount;
       }
 
-      if (t.isfor == "shared") {
+      if (t.isfor == "shared" && t.categories.indexOf("Rent") == -1) {
         inc("all");
 
         if (JSON.stringify(t.categories) == JSON.stringify(['payment'])) {

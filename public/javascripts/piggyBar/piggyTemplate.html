@@ -42,4 +42,40 @@
   <div>
     {{monthTotals}}
   </div>
+---------------------------- </br>
+----------------------------
+  <div>
+    <table>
+      <tr>
+        <th>Category</th>
+        <th></th>
+        <th>Amount</th>
+      </tr>
+      <tbody ng-repeat="(user, totals) in aggregates[0]">
+        <tr>
+          <td>{{user}}</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr ng-repeat="(category, amount) in totals">
+          <td>{{category}}</td>
+          <td>
+            <div class="amount-bar" ng-style="{width: amount/10 + 'px'}"></div>
+          </td>
+          <td>{{amount}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+---------------------------- </br>
+----------------------------
+  <div>
+    <div ng-repeat="(user, totals) in aggregates[0]">
+      <div class="totals-user"><h2>{{user}}:</h2></div>
+      <div ng-repeat="(category, amount) in totals" ng-if="category != 'Balance'">
+        <div class="amount-bar" ng-style="{width: amount*100/maxAmount + '%'}"></div>
+        <div class="amount-label">{{category}}: ${{amount}}</div>
+      </div>
+    </div>
+  </div>
 </div>

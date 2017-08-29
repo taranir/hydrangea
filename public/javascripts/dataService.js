@@ -55,7 +55,7 @@ angular.module('moneystuff')
         user: "tian",
         categories: "",
         amount: 0,
-        description: ""
+        description: "",
       };
     };
 
