@@ -18,4 +18,7 @@ angular
       .when('/settings', {
         template: '<settings></settings>',
       })
+      .when('/upload', {
+        template: '<upload></upload>',
+      })
   }]);

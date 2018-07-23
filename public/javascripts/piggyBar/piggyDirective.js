@@ -7,7 +7,7 @@ app.directive('piggy', function () {
       $scope.budgetArray = dataService.getAllBudgetsFBArray();
       $scope.budgetArray.$loaded()
         .then(function() {
-          console.log($scope.budgetArray);
+          // console.log($scope.budgetArray);
           $scope.currentBudget = $scope.budgetArray[$scope.budgetArray.length -1];
 
           if ($scope.currentBudget.date != $scope.currentMonth) {
@@ -79,15 +79,15 @@ app.directive('piggy', function () {
       $scope.updateProgressBars();
 
       $scope.aggregates = aggregates;
-      console.log("updateValuesForMonth");
-      console.log(aggregates);
+      // console.log("updateValuesForMonth");
+      // console.log(aggregates);
     }
 
     $scope.updateProgressBars = function() {
       for (var user in {"all": 1, "tian": 1, "joe": 1}) {
         for (var category in $scope.currentBudget[user]) {
           var values = $scope.currentBudget[user][category];
-          console.log("values for ", category, values);
+          // console.log("values for ", category, values);
           var selector = "#" + user + "-" + category + "-progress";
           var bar = $(selector);
           bar.progress("set total", values[0]);

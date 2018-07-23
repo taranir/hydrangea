@@ -1,0 +1,17 @@
+<td>{{renderDate(data.date)}}</td>
+
+<td>
+  <div class="tag" ng-repeat="user in data.users">{{user}}</div>
+</td>
+
+<td>{{data.description}}</td>
+
+<td><pre>{{padAmount(data.amount)}}</pre></td>
+
+<!-- Category -->
+<td><span class="tag category-tag" ng-repeat="category in data.categories | orderBy: 'category'">{{category}}</span></td>
+<td>
+  <button class="ui basic button delete-button" ng-click="$parent.deleteConfirmation(transaction.$id)">
+    <i class="fa fa-times" aria-hidden="true"></i>
+  </button>
+</td>

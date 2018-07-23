@@ -7,7 +7,8 @@ app.directive('navigation', function () {
     $scope.links = [
       ['Transactions', '/'],
       ['Summary', '/summary'],
-      ['Settings', '/settings']
+      ['Settings', '/settings'],
+      ['Upload', '/upload']
     ];
 
     $scope.navigate = function (url) {

@@ -9,21 +9,6 @@ angular.module('moneystuff')
     // Transactions //
     //////////////////
 
-    // {
-    //   year: today.getFullYear(),
-    //   month: today.getMonth() + 1,
-    //   day: today.getDate(),
-    //   date: processDate(today.getFullYear(), today.getMonth() + 1, today.getDate()),
-    //   shared: true,
-    //   user: "joe",
-    //   categories: {
-    //     food: true,
-    //     asdf: true
-    //   },
-    //   amount: 0,
-    //   description: ""
-    // }
-
     this.getAllTransactionsFBObj = function() {
       return $firebaseObject(db.ref("transactions")
         .orderByChild("date"));
@@ -44,6 +29,18 @@ angular.module('moneystuff')
         .endAt(processDate(ey, em, ed)));
     };
 
+    // {
+    //   year: 2018,
+    //   month: 1,
+    //   day: 1,
+    //   date: "20180101",
+    //   users: ["Joe"],
+    //   categories: [""],
+    //   amount: 10.0,
+    //   description: "",
+    //   originalHash: "",
+    // }
+
     this.getNewTransaction = function() {
       var today = new Date();
       return {
@@ -51,57 +48,17 @@ angular.module('moneystuff')
         month: today.getMonth() + 1,
         day: today.getDate(),
         date: processDate(today.getFullYear(), today.getMonth() + 1, today.getDate()),
-        isfor: "self",
-        user: "tian",
-        categories: "",
+        users: [],
+        categories: [],
         amount: 0,
         description: "",
+        originalHash: "",
       };
     };
 
     this.saveNewTransaction = function(transaction) {
       transaction.date = processDate(parseInt(transaction.year), parseInt(transaction.month), parseInt(transaction.day));
       return db.ref("transactions").push(transaction);
-    };
-
-    function shuffle(array) {
-      var currentIndex = array.length, temporaryValue, randomIndex;
-
-      // While there remain elements to shuffle...
-      while (0 !== currentIndex) {
-
-        // Pick a remaining element...
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-
-        // And swap it with the current element.
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-      }
-
-      return array;
-    };
-
-    var categories = ["food", "games", "rent", "travel", "electronics", "clothes", "discretionary", "books", "snacks", "subscriptions"];
-    this.addRandomTransaction = function() {
-      var m = getRandomInt(1, 12);
-      var d = getRandomInt(1, 31);
-      var n = getRandomInt(1, 5);
-      var c = shuffle(categories).slice(0, n);
-      var t = {
-        year: 2016,
-        month: getRandomInt(1, 12),
-        day: getRandomInt(1, 31),
-        date: processDate(2016, m, d),
-        isfor: ["shared", "self", "other"][getRandomInt(1, 3)],
-        user: getRandomInt(1, 2) == 1 ? "tian" : "joe",
-        categories: c,
-        amount: Math.round(getRandomAmount(1, 9999) * 100) / 100,
-        description: "test " + getRandomInt(1, 999)
-      };
-
-      this.saveNewTransaction(t);
     };
 
     this.deleteTransaction = function(key) {
@@ -127,6 +84,24 @@ angular.module('moneystuff')
 
     this.saveNewBudget = function(budget) {
       return db.ref("budgets/" + budget.date).set(budget);
+    };
+
+
+    this.getAllUsers = function() {
+      // console.log("asdf");
+      // // var users = [];
+      // return angular.forEach($firebaseArray(db.ref("Users")), function(u) {
+      //   console.log(u);
+      //   console.log(typeof u);
+      //   return u;
+      // });
+      // angular.forEach($scope.transactionArray, function(t) {
+      // return ;
+      return $firebaseArray(db.ref("Users"));
+    };
+
+    this.getAllCategories = function() {
+      return $firebaseArray(db.ref("Categories"));
     };
 
     return this;

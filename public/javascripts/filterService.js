@@ -7,7 +7,7 @@ angular.module('moneystuff')
 
     this.shouldShowTransaction = function(transaction) {
       if (userFilter !== "") {
-        if (transaction.user !== userFilter) {
+        if (transaction.users.indexOf(userFilter) == -1) {
           return false;
         }
       }
@@ -30,12 +30,12 @@ angular.module('moneystuff')
       return true;
     };
 
-    this.getBudget = function() {
-      if (monthFilter !== "" && yearFilter != "") {
-        return yearFilter + monthToNum(monthFilter);
-      }
-      return "";
-    }
+    // this.getBudget = function() {
+    //   if (monthFilter !== "" && yearFilter != "") {
+    //     return yearFilter + monthToNum(monthFilter);
+    //   }
+    //   return "";
+    // }
 
     this.updateFilters = function(nUserFilter, nCategoryFilter, nMonthFilter, nYearFilter) {
       userFilter = nUserFilter;
