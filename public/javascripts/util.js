@@ -42,8 +42,10 @@ function renderDate(dateString) {
 }
 
 function padAmount(a) {
-  var s = '$' + a.toFixed(2);
-  return (Array(12).join(" ") + s).substring(s.length);
+  if (a) {
+    var s = '$' + a.toFixed(2);
+    return (Array(12).join(" ") + s).substring(s.length);
+  }
 };
 
 var numToMonthDict = {

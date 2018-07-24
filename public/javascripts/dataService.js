@@ -10,20 +10,20 @@ angular.module('moneystuff')
     //////////////////
 
     this.getAllTransactionsFBObj = function() {
-      return $firebaseObject(db.ref("transactions")
+      return $firebaseObject(db.ref("Transactions")
         .orderByChild("date"));
     };
 
     this.getAllTransactionsFBArray = function() {
       if (!allTransactions) {
-        allTransactions = $firebaseArray(db.ref("transactions")
+        allTransactions = $firebaseArray(db.ref("Transactions")
           .orderByChild("date"));
       }
       return allTransactions;
     };
 
     this.getTransactionsFBObj = function(sy, sm, sd, ey, em, ed) {
-      return $firebaseObject(db.ref("transactions")
+      return $firebaseObject(db.ref("Transactions")
         .orderByChild("date")
         .startAt(processDate(sy, sm, sd))
         .endAt(processDate(ey, em, ed)));
@@ -57,20 +57,19 @@ angular.module('moneystuff')
     };
 
     this.saveNewTransaction = function(transaction) {
-      transaction.date = processDate(parseInt(transaction.year), parseInt(transaction.month), parseInt(transaction.day));
-      return db.ref("transactions").push(transaction);
+      return db.ref("Transactions").push(transaction);
     };
 
     this.deleteTransaction = function(key) {
-      db.ref("transactions/" + key).remove();
+      db.ref("Transactions/" + key).remove();
     };
 
     this.updateTransaction = function(key, transaction) {
-      db.ref("transactions/" + key).set(transaction);
+      db.ref("Transactions/" + key).set(transaction);
     };
 
     this.getTransactionFBObjFromRef = function(ref) {
-      return $firebaseObject(db.ref("transactions/" + ref.key));
+      return $firebaseObject(db.ref("Transactions/" + ref.key));
     };
 
     /////////////
@@ -78,26 +77,21 @@ angular.module('moneystuff')
     /////////////
 
     this.getAllBudgetsFBArray = function() {
-      return $firebaseArray(db.ref("budgets")
+      return $firebaseArray(db.ref("Budgets")
         .orderByChild("date"));
     };
 
     this.saveNewBudget = function(budget) {
-      return db.ref("budgets/" + budget.date).set(budget);
+      return db.ref("Budgets/" + budget.date).set(budget);
     };
 
 
     this.getAllUsers = function() {
-      // console.log("asdf");
-      // // var users = [];
-      // return angular.forEach($firebaseArray(db.ref("Users")), function(u) {
-      //   console.log(u);
-      //   console.log(typeof u);
-      //   return u;
-      // });
-      // angular.forEach($scope.transactionArray, function(t) {
-      // return ;
       return $firebaseArray(db.ref("Users"));
+    };
+
+    this.updateUsers = function(users) {
+      return db.ref("Users").set(users);
     };
 
     this.getAllCategories = function() {

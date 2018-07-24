@@ -10,8 +10,8 @@
 
 <!-- Category -->
 <td><span class="tag category-tag" ng-repeat="category in data.categories | orderBy: 'category'">{{category}}</span></td>
-<td>
-  <button class="ui basic button delete-button" ng-click="$parent.deleteConfirmation(transaction.$id)">
+<td ng-if="showDelete">
+  <button class="ui basic button delete-button" ng-click="deleteConfirmation(transaction.$id)">
     <i class="fa fa-times" aria-hidden="true"></i>
   </button>
 </td>

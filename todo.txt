@@ -1,1 +1,32 @@
  - better filter (multiselects? toggles instead of dropdowns)
+ - user labels - horizontal instead of vertical? grouped?
+ - add text input for new user?
+ - initial check for all transactions
+ - check on add for new users/categories
+ - get allYears from list of transactions
+
+
+
+ - budgets model
+
+"asdf" : {
+  active: true | false,
+  filter: {
+    users: [list of users],
+    categories: [list of categories]
+  },
+  period: x days | x months,
+  rollover: true | false,
+  amount: x,
+
+  lastreset: date,
+  lastupdated: date
+  currentLimit: x+d,
+  currentTotal: x
+}
+
+for each active:
+ - check if need to reset (period + lastreset)
+ - get all that match filter + lastreset
+ - sum up, update lastupdated and currentTotal
+

@@ -52,15 +52,15 @@ angular.module('moneystuff')
       }
     }
 
-    this.getUserFilter = function() { return userFilter; };
-    this.getCategoryFilter = function() { return categoryFilter; };
-    this.getMonthFilter = function() { return monthFilter; };
-    this.getYearFilter = function() { return yearFilter; };
+    // this.getUserFilter = function() { return userFilter; };
+    // this.getCategoryFilter = function() { return categoryFilter; };
+    // this.getMonthFilter = function() { return monthFilter; };
+    // this.getYearFilter = function() { return yearFilter; };
 
-    this.setUserFilter = function(nFilter) { userFilter = nFilter; };
-    this.setCategoryFilter = function(nFilter) { categoryFilter = nFilter; };
-    this.setMonthFilter = function(nFilter) { monthFilter = nFilter; };
-    this.setYearFilter = function(nFilter) { yearFilter = nFilter; };
+    // this.setUserFilter = function(nFilter) { userFilter = nFilter; };
+    // this.setCategoryFilter = function(nFilter) { categoryFilter = nFilter; };
+    // this.setMonthFilter = function(nFilter) { monthFilter = nFilter; };
+    // this.setYearFilter = function(nFilter) { yearFilter = nFilter; };
 
     return this;
   });

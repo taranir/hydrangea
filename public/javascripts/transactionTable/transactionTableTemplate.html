@@ -7,25 +7,8 @@
       <div class="description">
         <p>Are you sure you want to delete this transaction?</p>
         <table class="transaction-table ui single line celled table">
-          <thead transaction-headers></thead>
-          <tr transaction-row data="transactionToDelete">
-          <!--tr>
-            <td>{{renderDate(transactionToDelete.date)}}</td>
-
-            <td class="text-center">
-              <div class="shared" ng-show="!transactionToDelete.shared"><i class="fa fa-times" aria-hidden="true"></i></div>
-            </td>
-
-            <td class="text-center">
-              <div class="tag tian-tag" ng-show="transactionToDelete.user=='tian'">Tian</div>
-              <div class="tag joe-tag" ng-show="transactionToDelete.user=='joe'">Joe</div>
-            </td>
-
-            <td>{{transactionToDelete.description}}</td>
-            <td>${{transactionToDelete.amount}}</td>
-
-            <td><span class="tag category-tag" ng-repeat="category in transactionToDelete.categories | orderBy: 'category'">{{category}}</span></td>
-          </tr-->
+          <thead transaction-headers show-delete="false"></thead>
+          <tr transaction-row data="transactionToDelete" show-delete="false">
         </table>
       </div>
     </div>
@@ -41,37 +24,35 @@
     </div>
   </div>
 
-<!-- FILTERING///////////////////////////////////////////////////////////////-->
-<div class="filter-row">
-  <select name="userFilter" ng-model="userFilter" class="ui dropdown" id="userFilter" ng-change="updateFilter()" >
-    <option value="">All</option>
-    <option ng-repeat="user in allUsers" value="{{user.$value}}">{{user.$value}}
-    </option>
-  </select>
+  <!-- FILTERING///////////////////////////////////////////////////////////////-->
+  <div class="filter-row">
+    <select name="userFilter" ng-model="userFilter" class="ui dropdown" id="userFilter" ng-change="updateFilter()" >
+      <option value="">All</option>
+      <option ng-repeat="user in allUsers" value="{{user.$value}}">{{user.$value}}
+      </option>
+    </select>
 
-  <select name="categoryFilter" ng-model="categoryFilter" class="ui dropdown" ng-change="updateFilter()"
-      id="categoryFilter" placeholder="Category">
-    <option value="">All</option>
-    <option ng-repeat="category in allCategories" value="{{category.$value}}">{{category.$value}}
-    </option>
-  </select>
-  <select name="monthFilter" ng-model="monthFilter" class="ui dropdown" id="monthFilter" ng-change="updateFilter()"
-      placeholder="Month">
-    <option ng-repeat="month in allMonths" value="{{month}}">{{month}}
-    </option>
-  </select>
-  <select name="yearFilter" ng-model="yearFilter" class="ui dropdown" id="yearFilter" ng-change="updateFilter()"
-      placeholder="Year">
-    <option ng-repeat="year in allYears" value="{{year}}">{{year}}
-    </option>
-  </select>
-</div>
+    <select name="categoryFilter" ng-model="categoryFilter" class="ui dropdown" ng-change="updateFilter()"
+        id="categoryFilter" placeholder="Category">
+      <option value="">All</option>
+      <option ng-repeat="category in allCategories" value="{{category.$value}}">{{category.$value}}
+      </option>
+    </select>
+    <select name="monthFilter" ng-model="monthFilter" class="ui dropdown" id="monthFilter" ng-change="updateFilter()"
+        placeholder="Month">
+      <option ng-repeat="month in allMonths" value="{{month}}">{{month}}
+      </option>
+    </select>
+    <select name="yearFilter" ng-model="yearFilter" class="ui dropdown" id="yearFilter" ng-change="updateFilter()"
+        placeholder="Year">
+      <option ng-repeat="year in allYears" value="{{year}}">{{year}}
+      </option>
+    </select>
+  </div>
 
-<!-- TRANSACTIONS////////////////////////////////////////////////////////////-->
-
-
+  <!-- TRANSACTIONS////////////////////////////////////////////////////////////-->
   <table class="transaction-table ui single line celled table">
-    <thead transaction-headers></thead>
+    <thead transaction-headers show-delete="true"></thead>
     <tr class="input-row">
       <td>
         <div class="ui input">
@@ -80,51 +61,15 @@
           <input class="day-input" type="text" ng-keypress="inputKeypress($event)" ng-model="newTransaction.day">
         </div>
       </td>
-      <!-- Shared input -->
-      <!-- <td class="text-center">
-        <div class="ui checkbox">
-          <input type="checkbox" name="shared" ng-model="newTransaction.shared">
-          <label></label>
-        </div>
-        <div class="ui form">
-          <div class="grouped fields">
-            <div class="field">
-              <div class="ui radio checkbox">
-                <input type="radio" ng-model="newTransaction.isfor" name="isfor" value="self">
-                <label>Self</label>
-              </div>
-            </div>
-            <div class="field">
-              <div class="ui radio checkbox">
-                <input type="radio" ng-model="newTransaction.isfor" name="isfor" value="shared">
-                <label>Shared</label>
-              </div>
-            </div>
-            <div class="field">
-              <div class="ui radio checkbox">
-                <input type="radio" ng-model="newTransaction.isfor" name="isfor" value="other">
-                <label>Other</label>
-              </div>
-            </div>
-          </div>
-        </div>
-      </td>  -->
-      <!-- Paid by input -->
       <td>
         <div class="ui form">
           <div class="grouped fields">
             <div class="field" ng-repeat="user in allUsers" ng-init="u = user.$value">
               <div class="ui checkbox">
-                <input type="checkbox" ng-model="newTransaction.users[u]" name="{{u}}" value="{{u}}">
+                <input type="checkbox" ng-model="newTransaction.usersInput[u]" name="{{u}}" value="{{u}}">
                 <label>{{u}}</label>
               </div>
             </div>
-            <!--div class="field">
-              <div class="ui radio checkbox">
-                <input type="radio" ng-model="newTransaction.user" name="user" value="tian">
-                <label>Tian</label>
-              </div>
-            </div-->
           </div>
         </div>
       </td>
@@ -148,17 +93,7 @@
       <td><button ng-click="addTransaction()" class="add-button positive ui button">+</button></td>
     </tr> <!-- input row -->
 
-    <tr transaction-row ng-repeat="transaction in transactionArray | orderBy:'-date'" ng-if="shouldShowTransaction(transaction)" data="transaction">
+    <tr transaction-row ng-repeat="transaction in transactionArray | orderBy:'-date'" ng-if="shouldShowTransaction(transaction)" data="transaction" show-delete="true" delete-confirmation="deleteConfirmation(transaction.$id)">
 
-    <!--tr ng-repeat="transaction in transactionArray | orderBy:'-date'" ng-if="shouldShowTransaction(transaction)">
-
-      <div transaction-row data="transaction"></div>
-
-      <td>
-        <button class="ui basic button delete-button" ng-click="deleteConfirmation(transaction.$id)">
-          <i class="fa fa-times" aria-hidden="true"></i>
-        </button>
-      </td>
-    </tr-->
   </table>
 </div>
