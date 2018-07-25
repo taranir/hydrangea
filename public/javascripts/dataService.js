@@ -29,18 +29,6 @@ angular.module('moneystuff')
         .endAt(processDate(ey, em, ed)));
     };
 
-    // {
-    //   year: 2018,
-    //   month: 1,
-    //   day: 1,
-    //   date: "20180101",
-    //   users: ["Joe"],
-    //   categories: [""],
-    //   amount: 10.0,
-    //   description: "",
-    //   originalHash: "",
-    // }
-
     this.getNewTransaction = function() {
       var today = new Date();
       return {
@@ -48,8 +36,8 @@ angular.module('moneystuff')
         month: today.getMonth() + 1,
         day: today.getDate(),
         date: processDate(today.getFullYear(), today.getMonth() + 1, today.getDate()),
-        users: [],
-        categories: [],
+        users: [], // list of strings
+        categories: [], // list of strings
         amount: 0,
         description: "",
         originalHash: "",
@@ -85,6 +73,27 @@ angular.module('moneystuff')
       return db.ref("Budgets/" + budget.date).set(budget);
     };
 
+    this.getNewBudget = function() {
+      return {
+        name: "",
+        active: true,
+        filter: {
+          users: [],
+          categories: []
+        },
+        period: 0,
+        rollover: false,
+        amount: 0,
+        lastReset: new Date(),
+        lastUpdated: new Date(),
+        currentLimit: 0,
+        currentTotal: 0
+      }
+    };
+
+    ///////////
+    // Other //
+    ///////////
 
     this.getAllUsers = function() {
       return $firebaseArray(db.ref("Users"));

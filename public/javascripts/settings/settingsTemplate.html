@@ -1,5 +1,37 @@
 <div class="settings-container">
-  <h2>Combined:</h2>
+  <h2>Add new budget:</h2>
+
+  <div class="ui labeled input">
+    <div class="ui label">Name:</div>
+    <input class="text-input" type="text" ng-model="newBudget.name">
+  </div>
+
+  <div class="ui labeled input">
+    <div class="ui label">Users:</div>
+    <input type="text" ng-keypress="inputKeypress($event)" ng-model="newBudget.filter.usersInput">
+  </div>
+
+  <div class="ui labeled input">
+    <div class="ui label">Categories:</div>
+    <input type="text" ng-keypress="inputKeypress($event)" ng-model="newBudget.filter.categoriesInput">
+  </div>
+
+  <div class="ui labeled input">
+    <div class="ui label">Period:</div>
+    <input class="amount-input" type="number" ng-model="newBudget.period">
+  </div>
+
+  <div class="ui checkbox">
+    <input type="checkbox" name="rollover" ng-model="newBudget.rollover">
+    <label>Rollover</label>
+  </div>
+
+  <div class="ui labeled input">
+    <div class="ui label">Amount:</div>
+    <input class="amount-input" type="number" ng-model="newBudget.amount">
+  </div>
+
+  <!--h2>Combined:</h2>
   <div ng-repeat="(category, amounts) in currentBudget.all">
     <div class="ui labeled input">
       <div class="ui label">{{category}}:</div>
@@ -33,5 +65,5 @@
       <input type="checkbox" name="rollback" ng-model="amounts[3]" ng-change="updateBudget()">
       <label></label>
     </div>
-  </div>
+  </div-->
 </div>

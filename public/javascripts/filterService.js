@@ -30,13 +30,6 @@ angular.module('moneystuff')
       return true;
     };
 
-    // this.getBudget = function() {
-    //   if (monthFilter !== "" && yearFilter != "") {
-    //     return yearFilter + monthToNum(monthFilter);
-    //   }
-    //   return "";
-    // }
-
     this.updateFilters = function(nUserFilter, nCategoryFilter, nMonthFilter, nYearFilter) {
       userFilter = nUserFilter;
       categoryFilter = nCategoryFilter;
@@ -51,16 +44,6 @@ angular.module('moneystuff')
         $rootScope.$broadcast('budgetReset');
       }
     }
-
-    // this.getUserFilter = function() { return userFilter; };
-    // this.getCategoryFilter = function() { return categoryFilter; };
-    // this.getMonthFilter = function() { return monthFilter; };
-    // this.getYearFilter = function() { return yearFilter; };
-
-    // this.setUserFilter = function(nFilter) { userFilter = nFilter; };
-    // this.setCategoryFilter = function(nFilter) { categoryFilter = nFilter; };
-    // this.setMonthFilter = function(nFilter) { monthFilter = nFilter; };
-    // this.setYearFilter = function(nFilter) { yearFilter = nFilter; };
 
     return this;
   });

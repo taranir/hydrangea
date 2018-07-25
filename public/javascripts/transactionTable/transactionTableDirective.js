@@ -121,7 +121,20 @@ app.directive('transactionTable', ['dataService', 'filterService', function (dat
       t.categories = t.categories.split(",").map(function(s) { return s.trim(); });
       t.date = processDate(parseInt(t.year), parseInt(t.month), parseInt(t.day));
       t.originalHash = t.date + t.amount + t.description;
-    }
+    };
+
+    var validateTransaction = function(t) {
+      if (t.users.length < 1) {
+        return "Users can't be blank";
+      } else if (t.categories.length < 1) {
+        return "Categories can't be blank";
+      } else if (t.description.length < 1) {
+        return "Description can't be blank";
+      } else if (t.amount == 0) {
+        return "Amount can't be 0";
+      }
+      return "";
+    };
 
     $scope.addTransaction = function() {
       prepareTransaction($scope.newTransaction);
@@ -129,14 +142,9 @@ app.directive('transactionTable', ['dataService', 'filterService', function (dat
 
       // TODO: check for new users/categories/years
 
-      if ($scope.newTransaction.users.length < 1) {
-        console.log("Users can't be blank");
-      } else if ($scope.newTransaction.categories.length < 1) {
-        console.log("Categories can't be blank");
-      } else if ($scope.newTransaction.description.length < 1) {
-        console.log("Description can't be blank");
-      } else if ($scope.newTransaction.amount == 0) {
-        console.log("Amount can't be 0");
+      var error = validateTransaction($scope.newTransaction);
+      if (error) {
+        console.log(error);
       } else {
         dataService.saveNewTransaction($scope.newTransaction);
         var oldTransaction = $scope.newTransaction;
@@ -146,8 +154,6 @@ app.directive('transactionTable', ['dataService', 'filterService', function (dat
         $scope.newTransaction.month = oldTransaction.month;
       }
     }
-
-    // $scope.renderDate = renderDate;
 
     $scope.deleteConfirmation = function(key) {
       console.log("deleteConfirmation in parent");
