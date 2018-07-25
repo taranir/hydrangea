@@ -98,5 +98,9 @@ angular.module('moneystuff')
       return $firebaseArray(db.ref("Categories"));
     };
 
+    this.updateCategories = function(categories) {
+      return db.ref("Categories").set(categories);
+    };
+
     return this;
   }]);

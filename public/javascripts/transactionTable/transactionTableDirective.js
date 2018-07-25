@@ -27,6 +27,54 @@ app.directive('transactionTable', ['dataService', 'filterService', function (dat
   }];
 
   var link = function($scope, element, attrs, controller, transcludeFn) {
+
+    $scope.calculateInitialValues = function(firebaseUsers, firebaseCategories, firebaseTransactions) {
+      $scope.transactionArray = firebaseTransactions;
+
+      var tYears = new Set();
+      var tUsers = new Set();
+      var tCategories = new Set();
+      angular.forEach($scope.transactionArray, function(t) {
+        tYears.add(t.year);
+        for (var i = 0; i < t.users.length; i++) {
+          tUsers.add(t.users[i]);
+        }
+        for (var i = 0; i < t.categories.length; i++) {
+          tCategories.add(t.categories[i]);
+        }
+      });
+
+      var fUsers = new Set();
+      angular.forEach(firebaseUsers, function(u) {
+        fUsers.add(u.$value);
+      });
+
+      var fCategories = new Set();
+      angular.forEach(firebaseCategories, function(c) {
+        fCategories.add(c.$value);
+      });
+
+      var allUsers = Array.from(union(tUsers, fUsers));
+      if (difference(tUsers, fUsers).size > 0) {
+        dataService.updateUsers(allUsers);
+      }
+
+      var allCategories = Array.from(union(tCategories, fCategories));
+      if (difference(tCategories, fCategories).size > 0) {
+        dataService.updateCategories(allCategories);
+      }
+
+      $scope.allUsers = Array.from(allUsers);
+      $scope.allCategories = Array.from(allCategories);
+      $scope.allMonths = getMonthNames();
+      $scope.allYears = Array.from(tYears);
+
+      console.log("firebase load finished");
+      $scope.$apply();
+      console.log("applied");
+    }
+
+
     this.init = function() {
       $scope.userFilter = "";
       $scope.categoryFilter = "";
@@ -36,94 +84,18 @@ app.directive('transactionTable', ['dataService', 'filterService', function (dat
       var firebaseUsers = dataService.getAllUsers();
       var firebaseCategories = dataService.getAllCategories();
       var firebaseTransactions = dataService.getAllTransactionsFBArray();
+      $scope.transactionArray = firebaseTransactions;
 
       Promise.all([firebaseUsers.$loaded(), firebaseCategories.$loaded(), firebaseTransactions.$loaded()])
         .then(function(values) {
-          console.log("In all loaded promise");
-          console.log(values);
-          console.log(firebaseUsers);
-          console.log(firebaseCategories);
-
-          $scope.transactionArray = firebaseTransactions;
-
-          var filterYears = new Set([""]);
-
-          var tUsers = new Set();
-          var tCategories = new Set();
-          angular.forEach($scope.transactionArray, function(t) {
-            filterYears.add(t.year);
-            // tUsers.addAll(t.users);
-          });
-
-          var filterUsers = new Set([""]);
-          // TODO: change to array.map?
-          angular.forEach(firebaseUsers, function(u) {
-            filterUsers.add(u.$value);
-          });
-
-          // TODO: if union(tUsers, filterUsers) != filterUsers, update firebaseUsers
-
-          $scope.allUsers = filterUsers;
-          $scope.allCategories
-
-          $scope.allMonths = getMonthNames();
-          $scope.allMonths.unshift("");
-          $scope.allYears = Array.from(filterYears);
-
-
-          $scope
-
-
-
-          // $scope.initialCheck();
-        });
-
-      $scope.allUsers = dataService.getAllUsers();
-      $scope.allCategories = dataService.getAllCategories();
-      $scope.allCategories.$loaded()
-        .then(function() {
-          console.log("-------------------------------------");
-          console.log(typeof $scope.allCategories);
-          console.log($scope.allCategories);
-        });
-      $scope.transactionArray = dataService.getAllTransactionsFBArray();
-      $scope.transactionArray.$loaded()
-        .then(function() {
-          $scope.initialCheck();
-          // $scope.transactionsChanged();
-          console.log("loaded transactions");
+          $scope.calculateInitialValues(...values);
         })
         .catch(function(error) {
-          console.log("error fetching transactions", error)
+          console.log("error fetching data from firebase", error)
         });
     }
 
     this.init();
-
-    $scope.initialCheck = function() {
-
-
-
-      // var allUsers = {};
-      // var allCategories = {};
-      // var allYears = {};
-      // angular.forEach($scope.transactionArray, function(t) {
-      //   angular.forEach(t.users, function(c) {
-      //     allUsers[c] = true;
-      //   });
-      //   angular.forEach(t.categories, function(c) {
-      //     allCategories[c] = true;
-      //   });
-      //   var date = renderDate(t["date"]).split("/");
-      //   allYears[date[2]] = true;
-      // });
-      // $scope.allCategories = Object.keys(allCategories);
-      // $scope.allCategories.unshift("");
-      // $scope.allCategories = Object.keys(allCategories);
-      // $scope.allCategories.unshift("");
-      // $scope.allYears = Object.keys(allYears);
-      // $scope.allYears.unshift("");
-    }
 
     $scope.updateFilter = function() {
       filterService.updateFilters($scope.userFilter, $scope.categoryFilter, $scope.monthFilter, $scope.yearFilter);
@@ -202,36 +174,6 @@ app.directive('transactionTable', ['dataService', 'filterService', function (dat
     $scope.$watch('transactionArray',function(newVal,oldVal){
       // $scope.transactionsChanged();
     }, true);
-
-    // $scope.transactionsChanged = function() {
-    //   console.log("transactions changed");
-      // TODO: check for new users/categories (check on add?)
-      // TODO: initial check that checks all transactions,
-      // var allUsers = {};
-      // var allCategories = {};
-      // var allYears = {};
-      // angular.forEach($scope.transactionArray, function(t) {
-      //   angular.forEach(t.users, function(c) {
-      //     allUsers[c] = true;
-      //   });
-      //   angular.forEach(t.categories, function(c) {
-      //     allCategories[c] = true;
-      //   });
-      //   var date = renderDate(t["date"]).split("/");
-      //   allYears[date[2]] = true;
-      // });
-      // $scope.allCategories = Object.keys(allCategories);
-      // $scope.allCategories.unshift("");
-      // $scope.allCategories = Object.keys(allCategories);
-      // $scope.allCategories.unshift("");
-      // $scope.allYears = Object.keys(allYears);
-      // $scope.allYears.unshift("");
-    // };
-
-    // $scope.setUserFilter = function(user) {
-    //   $scope.userFilter = user;
-    //   $scope.updateFilter();
-    // };
   };
 
   return {
