@@ -6,27 +6,11 @@
  - get allYears from list of transactions
 
 
-
- - budgets model
-
-"asdf" : {
-  active: true | false,
-  filter: {
-    users: [list of users],
-    categories: [list of categories]
-  },
-  period: x days | x months,
-  rollover: true | false,
-  amount: x,
-
-  lastreset: date,
-  lastupdated: date
-  currentLimit: x+d,
-  currentTotal: x
-}
+piggy directive:
 
 for each active:
  - check if need to reset (period + lastreset)
  - get all that match filter + lastreset
  - sum up, update lastupdated and currentTotal
 
+rename settings to addBudget or something
