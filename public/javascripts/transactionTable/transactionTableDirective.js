@@ -28,6 +28,26 @@ app.directive('transactionTable', ['dataService', 'filterService', function (dat
 
   var link = function($scope, element, attrs, controller, transcludeFn) {
 
+    this.init = function() {
+      $scope.userFilter = "";
+      $scope.categoryFilter = "";
+      $scope.monthFilter = "";
+      $scope.yearFilter = "";
+
+      var firebaseUsers = dataService.getAllUsers();
+      var firebaseCategories = dataService.getAllCategories();
+      var firebaseTransactions = dataService.getAllTransactionsFBArray();
+      $scope.transactionArray = firebaseTransactions;
+
+      Promise.all([firebaseUsers.$loaded(), firebaseCategories.$loaded(), firebaseTransactions.$loaded()])
+        .then(function(values) {
+          $scope.calculateInitialValues(...values);
+        })
+        .catch(function(error) {
+          console.log("error fetching data from firebase", error)
+        });
+    }
+
     $scope.calculateInitialValues = function(firebaseUsers, firebaseCategories, firebaseTransactions) {
       $scope.transactionArray = firebaseTransactions;
 
@@ -74,27 +94,6 @@ app.directive('transactionTable', ['dataService', 'filterService', function (dat
       console.log("applied");
     }
 
-
-    this.init = function() {
-      $scope.userFilter = "";
-      $scope.categoryFilter = "";
-      $scope.monthFilter = "";
-      $scope.yearFilter = "";
-
-      var firebaseUsers = dataService.getAllUsers();
-      var firebaseCategories = dataService.getAllCategories();
-      var firebaseTransactions = dataService.getAllTransactionsFBArray();
-      $scope.transactionArray = firebaseTransactions;
-
-      Promise.all([firebaseUsers.$loaded(), firebaseCategories.$loaded(), firebaseTransactions.$loaded()])
-        .then(function(values) {
-          $scope.calculateInitialValues(...values);
-        })
-        .catch(function(error) {
-          console.log("error fetching data from firebase", error)
-        });
-    }
-
     this.init();
 
     $scope.updateFilter = function() {
@@ -116,8 +115,10 @@ app.directive('transactionTable', ['dataService', 'filterService', function (dat
     $scope.newTransaction = $scope.getNewTransaction();
 
     var prepareTransaction = function(t) {
-      var users = t.usersInput;
-      t.users = Object.keys(users).map(function(k) { if (users[k]) { return k; } }).filter(Boolean);
+      var u = t.usersInput;
+      t.users = Object.keys(u).map(function(k) { if (u[k]) { return k; } }).filter(Boolean);
+      delete t.usersInput;
+
       t.categories = t.categories.split(",").map(function(s) { return s.trim(); });
       t.date = processDate(parseInt(t.year), parseInt(t.month), parseInt(t.day));
       t.originalHash = t.date + t.amount + t.description;

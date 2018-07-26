@@ -1,14 +1,23 @@
 <div class="settings-container">
   <h2>Add new budget:</h2>
-
+  {{newBudget}}
   <div class="ui labeled input">
     <div class="ui label">Name:</div>
     <input class="text-input" type="text" ng-model="newBudget.name">
   </div>
 
-  <div class="ui labeled input">
+  <!--div class="ui labeled input">
     <div class="ui label">Users:</div>
     <input type="text" ng-keypress="inputKeypress($event)" ng-model="newBudget.filter.usersInput">
+  </div-->
+
+  <div class="grouped fields">
+    <div class="field" ng-repeat="user in allUsers">
+      <div class="ui checkbox">
+        <input type="checkbox" ng-model="newBudget.filter.usersInput[user]" name="{{user}}" value="{{user}}">
+        <label>{{user}}</label>
+      </div>
+    </div>
   </div>
 
   <div class="ui labeled input">
@@ -30,6 +39,8 @@
     <div class="ui label">Amount:</div>
     <input class="amount-input" type="number" ng-model="newBudget.amount">
   </div>
+
+  <button ng-click="addBudget()" class="add-button positive ui button">Add</button>
 
   <!--h2>Combined:</h2>
   <div ng-repeat="(category, amounts) in currentBudget.all">

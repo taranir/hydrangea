@@ -70,7 +70,7 @@ angular.module('moneystuff')
     };
 
     this.saveNewBudget = function(budget) {
-      return db.ref("Budgets/" + budget.date).set(budget);
+      return db.ref("Budgets").push(budget);
     };
 
     this.getNewBudget = function() {
