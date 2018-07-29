@@ -29,21 +29,6 @@ angular.module('moneystuff')
         .endAt(processDate(ey, em, ed)));
     };
 
-    this.getNewTransaction = function() {
-      var today = new Date();
-      return {
-        year: today.getFullYear(),
-        month: today.getMonth() + 1,
-        day: today.getDate(),
-        date: processDate(today.getFullYear(), today.getMonth() + 1, today.getDate()),
-        users: [], // list of strings
-        categories: [], // list of strings
-        amount: 0,
-        description: "",
-        originalHash: "",
-      };
-    };
-
     this.saveNewTransaction = function(transaction) {
       return db.ref("Transactions").push(transaction);
     };
@@ -60,6 +45,52 @@ angular.module('moneystuff')
       return $firebaseObject(db.ref("Transactions/" + ref.key));
     };
 
+    this.getNewTransaction = function() {
+      var today = new Date();
+      return {
+        year: today.getFullYear(),
+        month: today.getMonth() + 1,
+        day: today.getDate(),
+        date: processDate(today.getFullYear(), today.getMonth() + 1, today.getDate()),
+        users: [], // list of strings
+        categories: [], // list of strings
+        amount: 0,
+        description: "",
+        originalHash: "",
+      };
+    };
+
+    this.prepareTransaction = function(t) {
+      if (t.usersInput) {
+        var u = t.usersInput;
+        t.users = Object.keys(u).map(function(k) { if (u[k]) { return k; } }).filter(Boolean);
+        delete t.usersInput;
+      }
+
+      t.categories = t.categories.split(",").map(function(s) { return s.trim(); });
+      t.date = processDate(parseInt(t.year), parseInt(t.month), parseInt(t.day));
+      if (!t.originalHash) {
+        t.originalHash = [t.date, t.amount, t.description].join(".");
+      }
+    };
+
+    this.validateTransaction = function(t) {
+      var errors = [];
+      if (t.users.length < 1) {
+        errors.push("Users can't be blank");
+      }
+      if (t.categories.length < 1) {
+        errors.push("Categories can't be blank");
+      }
+      if (t.description.length < 1) {
+        errors.push("Description can't be blank");
+      }
+      if (t.amount == 0) {
+        errors.push("Amount can't be 0");
+      }
+      return errors;
+    };
+
     /////////////
     // Budgets //
     /////////////
@@ -70,10 +101,13 @@ angular.module('moneystuff')
     };
 
     this.saveNewBudget = function(budget) {
+      console.log("asdf");
       return db.ref("Budgets").push(budget);
     };
 
     this.getNewBudget = function() {
+      var today = new Date();
+      var todayS = processDate(today.getFullYear(), today.getMonth() + 1, today.getDate());
       return {
         name: "",
         active: true,
@@ -84,8 +118,8 @@ angular.module('moneystuff')
         period: 0,
         rollover: false,
         amount: 0,
-        lastReset: new Date(),
-        lastUpdated: new Date(),
+        lastReset: todayS,
+        lastUpdated: todayS,
         currentLimit: 0,
         currentTotal: 0
       }

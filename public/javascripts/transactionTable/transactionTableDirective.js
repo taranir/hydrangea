@@ -19,6 +19,22 @@ app.directive('transactionHeaders', function () {
     },
     templateUrl: 'javascripts/transactionTable/transactionRow.html',
   };
+}).directive('transactionInput', function () {
+  return {
+    scope: {
+      transaction : '=',
+      allUsers: '=',
+      addTransaction: '&'
+    },
+    controller: function($scope) {
+      $scope.inputKeypress = function(event) {
+        if (event.keyCode === 13) {
+          $scope.addTransaction();
+        }
+      }
+    },
+    templateUrl: 'javascripts/transactionTable/transactionInput.html',
+  };
 });
 
 app.directive('transactionTable', ['dataService', 'filterService', function (dataService, filterService, $filter) {
@@ -33,6 +49,9 @@ app.directive('transactionTable', ['dataService', 'filterService', function (dat
       $scope.categoryFilter = "";
       $scope.monthFilter = "";
       $scope.yearFilter = "";
+
+      $scope.newTransaction = $scope.getNewTransaction();
+      $scope.transactionErrors = [];
 
       var firebaseUsers = dataService.getAllUsers();
       var firebaseCategories = dataService.getAllCategories();
@@ -94,7 +113,11 @@ app.directive('transactionTable', ['dataService', 'filterService', function (dat
       console.log("applied");
     }
 
-    this.init();
+    $scope.getNewTransaction = function() {
+      var nt = dataService.getNewTransaction();
+      nt.usersInput = {};
+      return nt;
+    }
 
     $scope.updateFilter = function() {
       filterService.updateFilters($scope.userFilter, $scope.categoryFilter, $scope.monthFilter, $scope.yearFilter);
@@ -106,47 +129,18 @@ app.directive('transactionTable', ['dataService', 'filterService', function (dat
       }
     }
 
-    $scope.getNewTransaction = function() {
-      var nt = dataService.getNewTransaction();
-      nt.usersInput = {};
-      return nt;
-    }
-
-    $scope.newTransaction = $scope.getNewTransaction();
-
-    var prepareTransaction = function(t) {
-      var u = t.usersInput;
-      t.users = Object.keys(u).map(function(k) { if (u[k]) { return k; } }).filter(Boolean);
-      delete t.usersInput;
-
-      t.categories = t.categories.split(",").map(function(s) { return s.trim(); });
-      t.date = processDate(parseInt(t.year), parseInt(t.month), parseInt(t.day));
-      t.originalHash = t.date + t.amount + t.description;
-    };
-
-    var validateTransaction = function(t) {
-      if (t.users.length < 1) {
-        return "Users can't be blank";
-      } else if (t.categories.length < 1) {
-        return "Categories can't be blank";
-      } else if (t.description.length < 1) {
-        return "Description can't be blank";
-      } else if (t.amount == 0) {
-        return "Amount can't be 0";
-      }
-      return "";
-    };
-
     $scope.addTransaction = function() {
-      prepareTransaction($scope.newTransaction);
+      dataService.prepareTransaction($scope.newTransaction);
       console.log($scope.newTransaction);
 
       // TODO: check for new users/categories/years
 
-      var error = validateTransaction($scope.newTransaction);
-      if (error) {
-        console.log(error);
+      var errors = dataService.validateTransaction($scope.newTransaction);
+      if (errors.length > 0) {
+        $scope.transactionErrors = errors;
+        console.log(errors);
       } else {
+        $scope.transactionErrors = [];
         dataService.saveNewTransaction($scope.newTransaction);
         var oldTransaction = $scope.newTransaction;
         $scope.newTransaction = $scope.getNewTransaction();
@@ -181,6 +175,8 @@ app.directive('transactionTable', ['dataService', 'filterService', function (dat
     $scope.$watch('transactionArray',function(newVal,oldVal){
       // $scope.transactionsChanged();
     }, true);
+
+    this.init();
   };
 
   return {

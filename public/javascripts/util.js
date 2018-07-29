@@ -28,16 +28,15 @@ function processDate(year, month, day) {
   if (!day) {
     day = new Date().getDate().toString();
   }
-  return "" + year + pad(month.toString()) + pad(day.toString());
+  return [year, pad(month.toString()), pad(day.toString())].join("-");
 };
 
 // Convert YYYYMMDD to MM/DD/YYYY
 function renderDate(dateString) {
   if (dateString) {
     dateString = dateString.toString();
-    return dateString.substring(4, 6) + "/"
-      + dateString.substring(6) + "/"
-      + dateString.substring(0, 4);
+    var parts = dateString.split("-");
+    return [parts[1], parts[2], parts[0]].join("/");
   }
 }
 

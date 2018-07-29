@@ -1,0 +1,37 @@
+<td>
+  <div class="ui input">
+    <input class="year-input" type="text" ng-keypress="inputKeypress($event)" ng-model="transaction.year">
+    <input class="month-input" type="text" ng-keypress="inputKeypress($event)" ng-model="transaction.month">
+    <input class="day-input" type="text" ng-keypress="inputKeypress($event)" ng-model="transaction.day">
+  </div>
+</td>
+<td>
+  <div class="ui form">
+    <div class="grouped fields">
+      <div class="field" ng-repeat="user in allUsers">
+        <div class="ui checkbox">
+          <input type="checkbox" ng-model="transaction.usersInput[user]" name="{{user}}" value="{{user}}">
+          <label>{{user}}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</td>
+
+<td>
+  <div class="ui input">
+    <input type="text" ng-keypress="inputKeypress($event)" ng-model="transaction.description">
+  </div>
+</td>
+<td>
+  <div class="ui input">
+    <!--input class="amount-input" type="number" step='0.01' ng-keypress="inputKeypress($event)" ng-model="transaction.amount"-->
+    <input type="text" ng-keypress="inputKeypress($event)" ng-model="transaction.amount" ng-currency currency-symbol=""/>
+  </div>
+</td>
+<td>
+  <div class="ui input">
+    <input type="text" ng-keypress="inputKeypress($event)" ng-model="transaction.categories">
+  </div>
+</td>
+<td><button ng-click="addTransaction()" class="add-button positive ui button">+</button></td>

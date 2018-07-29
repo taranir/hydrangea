@@ -1,7 +1,21 @@
 var app = angular.module('moneystuff');
 app.directive('upload', function () {
-  var controller = ['$scope', 'dataService', function ($scope, dataService) {
-    function init() {}
+  var controller = ['$scope', '$timeout', 'dataService', function ($scope, $timeout, dataService) {
+    function init() {
+      console.log("init");
+
+      var firebaseUsers = dataService.getAllUsers();
+      firebaseUsers.$loaded()
+        .then(function() {
+          var fUsers = new Set();
+          angular.forEach(firebaseUsers, function(u) {
+            fUsers.add(u.$value);
+          });
+          $timeout(function() {
+            $scope.allUsers = Array.from(fUsers);
+          });
+        });
+    }
 
     $scope.buttonPressed = function() {
       console.log("asdf");
@@ -14,36 +28,103 @@ app.directive('upload', function () {
       r.onloadend = function(e) {
         var data = e.target.result;
         processData(data);
+        $scope.$apply();
       }
 
       r.readAsBinaryString(f);
     };
 
     var boaHeaders = ["Posted Date", "Reference Number", "Payee", "Address", "Amount"];
-    var chaseHeaders = ["Type", "Trans Date", "Post Date", "Description", "Amount"];
     var citiHeaders = ["Status", "Date", "Description", "Debit", "Credit"];
+    var chaseHeaders = ["Type", "Trans Date", "Post Date", "Description", "Amount"];
 
+    var getNewTransactionWithDate = function(date) {
+      var parts = date.split("/");
+      var t = dataService.getNewTransaction();
+      t.year = parseInt(parts[2]);
+      t.month = parseInt(parts[0]);
+      t.day = parseInt(parts[1]);
+      t.date = processDate(parts[2], parts[0], parts[1]);
+      return t;
+    }
+
+    //MM/DD/YYYY
     var convertBoaToTransactions = function(data) {
-      console.log(data[0]);
+      var transactions = [];
       for (var i = 0; i < data.length; i++) {
-        data[i]
+        var d = data[i];
+
+        var refNumber = d[1];
+        var description = d[2].trim();
+        var amount = d[4];
+
+        if (description.toLowerCase().indexOf("online payment") > -1) {
+          // is a payment
+          continue;
+        }
+
+        var t = getNewTransactionWithDate(d[0]);
+        t.amount = parseFloat(amount) * -1;
+        t.description = description;
+        t.originalHash = [t.date, t.amount, t.description].join(".");
+        transactions.push(t);
       }
-    };
-
-    var convertChaseToTransactions = function(data) {
-
+      return transactions;
     };
 
     var convertCitiToTransactions = function(data) {
+      var transactions = [];
+      for (var i = 0; i < data.length; i++) {
+        var d = data[i];
+        var description = d[2].trim();
+        var debit = d[3];
+        var credit = d[4];
+        if (d[1] > "02/05/2018") {
+          debit = d[4];
+          credit = d[3];
+        }
 
+        if (description.toLowerCase().indexOf("online payment") > -1) {
+          // is a payment
+          continue;
+        }
+
+        var t = getNewTransactionWithDate(d[1]);
+        //t.amount = ???;
+        t.description = description;
+        t.originalHash = [t.date, t.amount, t.description].join(".");
+        transactions.push(t);
+      }
+      return transactions;
+    };
+
+    var convertChaseToTransactions = function(data) {
+      var transactions = [];
+      for (var i = 0; i < data.length; i++) {
+        var d = data[i];
+        var description = d[3].trim();
+        var amount = d[4];
+
+        if (d[0] == "Payment") {
+          continue;
+        }
+
+        var t = getNewTransactionWithDate(d[1]);
+        t.amount = parseFloat(amount) * -1;
+        t.description = description;
+        t.originalHash = [t.date, t.amount, t.description].join(".");
+        transactions.push(t);
+      }
+      return transactions;
     };
 
     var processData = function(data) {
       console.log("process data");
+      console.log($scope.transactions);
 
       var rows = CSVToArray(data, ",");
       var headers = rows[0];
-      var data = rows.slice(1);
+      var data = rows.slice(1).filter(t => t.length == 5);
 
       var transactions = [];
       if (arraysEqual(headers, boaHeaders)) {
@@ -58,10 +139,26 @@ app.directive('upload', function () {
       } else {
         console.log("unknown");
       }
-
+      $scope.transactions = transactions;
+      console.log($scope.transactions);
+      console.log("done processing");
     };
 
-
+    $scope.addTransactions = function() {
+      for (var i = $scope.transactions.length - 1; i >= 0; i--) {
+        var t = Object.assign({}, $scope.transactions[i]);
+        dataService.prepareTransaction(t);
+        var errors = dataService.validateTransaction(t);
+        if (errors.length > 0) {
+          console.log(errors);
+        } else {
+          console.log(t);
+          delete t.$$hashKey;
+          dataService.saveNewTransaction(t);
+          $scope.transactions.splice(i, 1);
+        }
+      }
+    }
 
     init();
   }];

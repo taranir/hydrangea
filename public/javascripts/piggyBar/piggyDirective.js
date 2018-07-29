@@ -12,7 +12,7 @@ app.directive('piggy', function () {
 
           if ($scope.currentBudget.date != $scope.currentMonth) {
             var newBudget = getNewBudget($scope.currentBudget, $scope.currentMonth);
-            dataService.saveNewBudget(newBudget);
+            // dataService.saveNewBudget(newBudget);
             $scope.currentBudget = $scope.budgetArray[$scope.budgetArray.length -1];
             console.log("new current budget date: " + $scope.currentBudget.date);
           }

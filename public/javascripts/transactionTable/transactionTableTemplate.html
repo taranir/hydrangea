@@ -55,46 +55,9 @@
   <!-- TRANSACTIONS////////////////////////////////////////////////////////////-->
   <table class="transaction-table ui single line celled table">
     <thead transaction-headers show-delete="true"></thead>
-    <tr class="input-row">
-      <td>
-        <div class="ui input">
-          <input class="year-input" type="text" ng-keypress="inputKeypress($event)" ng-model="newTransaction.year">
-          <input class="month-input" type="text" ng-keypress="inputKeypress($event)" ng-model="newTransaction.month">
-          <input class="day-input" type="text" ng-keypress="inputKeypress($event)" ng-model="newTransaction.day">
-        </div>
-      </td>
-      <td>
-        <div class="ui form">
-          <div class="grouped fields">
-            <div class="field" ng-repeat="user in allUsers">
-              <div class="ui checkbox">
-                <input type="checkbox" ng-model="newTransaction.usersInput[user]" name="{{user}}" value="{{user}}">
-                <label>{{user}}</label>
-              </div>
-            </div>
-          </div>
-        </div>
-      </td>
+    <tr class="input-row" transaction-input transaction="newTransaction" all-users="allUsers" add-transaction="addTransaction()"></tr>
 
-      <td>
-        <div class="ui input">
-          <input type="text" ng-keypress="inputKeypress($event)" ng-model="newTransaction.description">
-        </div>
-      </td>
-      <td>
-        <div class="ui input">
-          <input class="amount-input" type="number" ng-keypress="inputKeypress($event)" ng-model="newTransaction.amount">
-        </div>
-      </td>
-      <td>
-        <div class="ui input">
-          <input type="text" ng-keypress="inputKeypress($event)" ng-model="newTransaction.categories">
-        </div>
-      </td>
-      <td><button ng-click="addTransaction()" class="add-button positive ui button">+</button></td>
-    </tr> <!-- input row -->
-
-    <tr transaction-row ng-repeat="transaction in transactionArray | orderBy:'-date'" ng-if="shouldShowTransaction(transaction)" data="transaction" show-delete="true" delete-confirmation="deleteConfirmation(transaction.$id)">
+    <tr transaction-row ng-repeat="transaction in transactionArray | orderBy:'-date'" ng-if="shouldShowTransaction(transaction)" data="transaction" show-delete="true" delete-confirmation="deleteConfirmation(transaction.$id)"></tr>
 
   </table>
 </div>

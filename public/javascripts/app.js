@@ -4,7 +4,8 @@ angular
   .module('moneystuff', [
     'ngRoute',
     'firebase',
-    'chart.js'
+    'chart.js',
+    'ng-currency'
   ])
   .config(['$routeProvider', '$locationProvider',
     function($routeProvider, $locationProvider) {

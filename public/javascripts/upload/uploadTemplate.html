@@ -1,6 +1,17 @@
-<div class="summary-wrapper">
+<div class="upload-wrapper">
 
-<input type="file" id="file" name="file" accep=".csv"/>
-<button ng-click="upload()">Upload</button>
+  <input type="file" id="file" name="file" accep=".csv"/>
+  <button ng-click="upload()">Upload</button>
+
+  <!-- TRANSACTIONS////////////////////////////////////////////////////////////-->
+  <table class="transaction-table ui single line celled table">
+    <thead transaction-headers show-delete="true"></thead>
+    <tr class="input-row" transaction-input ng-repeat="t in transactions" transaction="t" all-users="allUsers" add-transaction="addTransaction()"></tr>
+
+    <!--tr transaction-row ng-repeat="transaction in transactionArray | orderBy:'-date'" ng-if="shouldShowTransaction(transaction)" data="transaction" show-delete="true" delete-confirmation="deleteConfirmation(transaction.$id)"></tr-->
+
+  </table>
+
+  <button ng-click="addTransactions()" class="add-button positive ui button">Add</button>
 
 </div>
