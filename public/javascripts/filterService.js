@@ -35,14 +35,16 @@ angular.module('moneystuff')
       categoryFilter = nCategoryFilter;
       monthFilter = nMonthFilter;
       yearFilter = nYearFilter;
-
       console.log("filter changed - broadcasting");
+      $rootScope.$broadcast('filterChanged');
 
-      if (monthFilter !== "" && yearFilter != "") {
-        $rootScope.$broadcast('budgetChanged', { month: yearFilter + monthToNum(monthFilter) });
-      } else {
-        $rootScope.$broadcast('budgetReset');
-      }
+
+
+      // if (monthFilter !== "" && yearFilter != "") {
+      //   $rootScope.$broadcast('budgetChanged', { month: yearFilter + monthToNum(monthFilter) });
+      // } else {
+      //   $rootScope.$broadcast('budgetReset');
+      // }
     }
 
     return this;

@@ -66,6 +66,8 @@ app.directive('upload', function () {
         var t = getNewTransactionWithDate(d[0]);
         t.amount = parseFloat(amount) * -1;
         t.description = description;
+        t.usersInput = {};
+        t.usersInput["Joe"] = true;
         t.originalHash = [t.date, t.amount, t.description].join(".");
         transactions.push(t);
       }
@@ -90,8 +92,10 @@ app.directive('upload', function () {
         }
 
         var t = getNewTransactionWithDate(d[1]);
-        //t.amount = ???;
+        t.amount = debit ? parseFloat(debit) : parseFloat(credit) * -1;
         t.description = description;
+        t.usersInput = {};
+        t.usersInput["Tian"] = true;
         t.originalHash = [t.date, t.amount, t.description].join(".");
         transactions.push(t);
       }
@@ -112,6 +116,8 @@ app.directive('upload', function () {
         var t = getNewTransactionWithDate(d[1]);
         t.amount = parseFloat(amount) * -1;
         t.description = description;
+        t.usersInput = {};
+        t.usersInput["Joe"] = true;
         t.originalHash = [t.date, t.amount, t.description].join(".");
         transactions.push(t);
       }

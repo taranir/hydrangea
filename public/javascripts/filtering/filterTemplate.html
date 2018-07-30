@@ -1,0 +1,26 @@
+<div class="filter-row">
+  <select name="userFilter" ng-model="userFilter" class="ui dropdown" id="userFilter" ng-change="updateFilter()" >
+    <option value="">All</option>
+    <option ng-repeat="user in allUsers" value="{{user}}">{{user}}
+    </option>
+  </select>
+
+  <select name="categoryFilter" ng-model="categoryFilter" class="ui dropdown" ng-change="updateFilter()"
+      id="categoryFilter" placeholder="Category">
+    <option value="">All</option>
+    <option ng-repeat="category in allCategories" value="{{category}}">{{category}}
+    </option>
+  </select>
+  <select name="monthFilter" ng-model="monthFilter" class="ui dropdown" id="monthFilter" ng-change="updateFilter()"
+      placeholder="Month">
+    <option value="">All</option>
+    <option ng-repeat="month in allMonths" value="{{month}}">{{month}}
+    </option>
+  </select>
+  <select name="yearFilter" ng-model="yearFilter" class="ui dropdown" id="yearFilter" ng-change="updateFilter()"
+      placeholder="Year">
+    <option value="">All</option>
+    <option ng-repeat="year in allYears" value="{{year}}">{{year}}
+    </option>
+  </select>
+</div>

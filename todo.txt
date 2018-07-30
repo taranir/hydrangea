@@ -1,36 +1,10 @@
- - better filter (multiselects? toggles instead of dropdowns)
- - user labels - horizontal instead of vertical? grouped?
- - add text input for new user?
- - initial check for all transactions
- - check on add for new users/categories
- - get allYears from list of transactions
-
-
-piggy directive:
-
-for each active:
- - check if need to reset (period + lastreset)
- - get all that match filter + lastreset
- - sum up, update lastupdated and currentTotal
-
-rename settings to addBudget or something
-
-transactionInput
- - newTransaction
- - allUSers
-  - addTransaction
- - if add or minus (checkbox) (for upload)
-
-
-move out filter - for graphs
- - allUsers
- - allCategories
- - allMonths
- - allYears
- - pass in updateFilter
-
-- allUsers/categoires/months/years should be stored in filterService.js
-
-fix online payment (still getting through)
-
-users/categories
+ - better filter (multiselects, +/-/"" for each option, toggles?)
+ - arrange user options horizontal instead of vertical?
+ - have a text input for new user
+ - check upon adding transaction for new options
+ - piggy directive
+   - for each active budget:
+     - check if need to be reset (period + lastreset)
+     - get all that match filter + last reset
+     - sum up, update lastUpdate and currentTotal
+ - settingsDirective should be budgetDirective or something

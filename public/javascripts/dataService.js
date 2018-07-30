@@ -1,6 +1,6 @@
 angular.module('moneystuff')
-  .service("dataService", ['$firebaseObject', '$firebaseArray',
-    function($firebaseObject, $firebaseArray) {
+  .service("dataService", ['$rootScope', '$firebaseObject', '$firebaseArray',
+    function($rootScope, $firebaseObject, $firebaseArray) {
     var db = firebase.database();
     var allTransactions;
     // var ref = firebase.database().ref();
@@ -144,6 +144,93 @@ angular.module('moneystuff')
     this.updateCategories = function(categories) {
       return db.ref("Categories").set(categories);
     };
+
+    var allUsers = [];
+    var allCategories = [];
+    var allMonths = [];
+    var allYears = [];
+
+    this.getUserOptions = function() {
+      return allUsers;
+    }
+    this.getCategoryOptions = function() {
+      return allCategories;
+    }
+    this.getMonthOptions = function() {
+      return allMonths;
+    }
+    this.getYearOptions = function() {
+      return allYears;
+    }
+
+    this.addUserOption = function(u) {
+      allUsers.push(u);
+      $rootScope.$broadcast('optionsUpdated');
+    }
+    this.addCategoryOption = function(c) {
+      allCategories.push(c);
+      $rootScope.$broadcast('optionsUpdated');
+    }
+    this.addMonthOption = function(m) {
+      allMonths.push(m);
+      $rootScope.$broadcast('optionsUpdated');
+    }
+    this.addYearOption = function(y) {
+      allYears.push(y);
+      $rootScope.$broadcast('optionsUpdated');
+    }
+
+    var calculateInitialValues = function(firebaseUsers, firebaseCategories, firebaseTransactions) {
+      var tYears = new Set();
+      var tUsers = new Set();
+      var tCategories = new Set();
+      angular.forEach(firebaseTransactions, function(t) {
+        tYears.add(t.year);
+        for (var i = 0; i < t.users.length; i++) {
+          tUsers.add(t.users[i]);
+        }
+        for (var i = 0; i < t.categories.length; i++) {
+          tCategories.add(t.categories[i]);
+        }
+      });
+
+      var fUsers = new Set();
+      angular.forEach(firebaseUsers, function(u) {
+        fUsers.add(u.$value);
+      });
+
+      var fCategories = new Set();
+      angular.forEach(firebaseCategories, function(c) {
+        fCategories.add(c.$value);
+      });
+
+      var combinedUsers = Array.from(union(tUsers, fUsers));
+      if (difference(tUsers, fUsers).size > 0) {
+        this.updateUsers(combinedUsers);
+      }
+
+      var combinedCategories = Array.from(union(tCategories, fCategories));
+      if (difference(tCategories, fCategories).size > 0) {
+        this.updateCategories(combinedCategories);
+      }
+
+      allUsers = Array.from(combinedUsers);
+      allCategories = Array.from(combinedCategories);
+      allMonths = getMonthNames();
+      allYears = Array.from(tYears);
+
+      console.log("broadcasting");
+
+      $rootScope.$broadcast('optionsUpdated');
+    }
+
+    var firebaseUsers = this.getAllUsers();
+    var firebaseCategories = this.getAllCategories();
+    var firebaseTransactions = this.getAllTransactionsFBArray();
+    Promise.all([firebaseUsers.$loaded(), firebaseCategories.$loaded(), firebaseTransactions.$loaded()])
+      .then(function(values) {
+        calculateInitialValues(...values);
+      });
 
     return this;
   }]);
