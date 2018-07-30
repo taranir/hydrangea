@@ -37,14 +37,6 @@ angular.module('moneystuff')
       yearFilter = nYearFilter;
       console.log("filter changed - broadcasting");
       $rootScope.$broadcast('filterChanged');
-
-
-
-      // if (monthFilter !== "" && yearFilter != "") {
-      //   $rootScope.$broadcast('budgetChanged', { month: yearFilter + monthToNum(monthFilter) });
-      // } else {
-      //   $rootScope.$broadcast('budgetReset');
-      // }
     }
 
     return this;

@@ -145,6 +145,10 @@ angular.module('moneystuff')
       return db.ref("Categories").set(categories);
     };
 
+    /////////////
+    // Options //
+    /////////////
+
     var allUsers = [];
     var allCategories = [];
     var allMonths = [];

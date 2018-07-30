@@ -45,30 +45,12 @@ app.directive('transactionTable', ['dataService', 'filterService', function (dat
   var link = function($scope, element, attrs, controller, transcludeFn) {
 
     this.init = function() {
-      // $scope.userFilter = "";
-      // $scope.categoryFilter = "";
-      // $scope.monthFilter = "";
-      // $scope.yearFilter = "";
-
       $scope.newTransaction = $scope.getNewTransaction();
       $scope.transactionErrors = [];
 
       $scope.allUsers = dataService.getUserOptions();
 
       $scope.transactionArray = dataService.getAllTransactionsFBArray();
-
-      // var firebaseUsers = dataService.getAllUsers();
-      // var firebaseCategories = dataService.getAllCategories();
-      // var firebaseTransactions = dataService.getAllTransactionsFBArray();
-      // $scope.transactionArray = firebaseTransactions;
-
-      // Promise.all([firebaseUsers.$loaded(), firebaseCategories.$loaded(), firebaseTransactions.$loaded()])
-      //   .then(function(values) {
-      //     $scope.calculateInitialValues(...values);
-      //   })
-      //   .catch(function(error) {
-      //     console.log("error fetching data from firebase", error)
-      //   });
     }
 
     $scope.$on('optionsUpdated', function() {
@@ -77,61 +59,11 @@ app.directive('transactionTable', ['dataService', 'filterService', function (dat
       console.log($scope.allUsers);
     });
 
-    // $scope.calculateInitialValues = function(firebaseUsers, firebaseCategories, firebaseTransactions) {
-    //   $scope.transactionArray = firebaseTransactions;
-
-    //   var tYears = new Set();
-    //   var tUsers = new Set();
-    //   var tCategories = new Set();
-    //   angular.forEach($scope.transactionArray, function(t) {
-    //     tYears.add(t.year);
-    //     for (var i = 0; i < t.users.length; i++) {
-    //       tUsers.add(t.users[i]);
-    //     }
-    //     for (var i = 0; i < t.categories.length; i++) {
-    //       tCategories.add(t.categories[i]);
-    //     }
-    //   });
-
-    //   var fUsers = new Set();
-    //   angular.forEach(firebaseUsers, function(u) {
-    //     fUsers.add(u.$value);
-    //   });
-
-    //   var fCategories = new Set();
-    //   angular.forEach(firebaseCategories, function(c) {
-    //     fCategories.add(c.$value);
-    //   });
-
-    //   var allUsers = Array.from(union(tUsers, fUsers));
-    //   if (difference(tUsers, fUsers).size > 0) {
-    //     dataService.updateUsers(allUsers);
-    //   }
-
-    //   var allCategories = Array.from(union(tCategories, fCategories));
-    //   if (difference(tCategories, fCategories).size > 0) {
-    //     dataService.updateCategories(allCategories);
-    //   }
-
-    //   $scope.allUsers = Array.from(allUsers);
-    //   $scope.allCategories = Array.from(allCategories);
-    //   $scope.allMonths = getMonthNames();
-    //   $scope.allYears = Array.from(tYears);
-
-    //   console.log("firebase load finished");
-    //   $scope.$apply();
-    //   console.log("applied");
-    // }
-
     $scope.getNewTransaction = function() {
       var nt = dataService.getNewTransaction();
       nt.usersInput = {};
       return nt;
     }
-
-    // $scope.updateFilter = function() {
-    //   filterService.updateFilters($scope.userFilter, $scope.categoryFilter, $scope.monthFilter, $scope.yearFilter);
-    // }
 
     $scope.inputKeypress = function(event) {
       if (event.keyCode === 13) {

@@ -6,11 +6,6 @@
     <input class="text-input" type="text" ng-model="newBudget.name">
   </div>
 
-  <!--div class="ui labeled input">
-    <div class="ui label">Users:</div>
-    <input type="text" ng-keypress="inputKeypress($event)" ng-model="newBudget.filter.usersInput">
-  </div-->
-
   <div class="grouped fields">
     <div class="field" ng-repeat="user in allUsers">
       <div class="ui checkbox">
@@ -41,40 +36,4 @@
   </div>
 
   <button ng-click="addBudget()" class="add-button positive ui button">Add</button>
-
-  <!--h2>Combined:</h2>
-  <div ng-repeat="(category, amounts) in currentBudget.all">
-    <div class="ui labeled input">
-      <div class="ui label">{{category}}:</div>
-      <input class="amount-input" type="number" ng-model="amounts[0]" ng-change="updateBudget()">
-    </div>
-    <div class="ui checkbox">
-      <input type="checkbox" name="rollback" ng-model="amounts[3]" ng-change="updateBudget()">
-      <label></label>
-    </div>
-  </div>
-
-  <h2>Tian:</h2>
-  <div ng-repeat="(category, amounts) in currentBudget.tian">
-    <div class="ui labeled input">
-      <div class="ui label">{{category}}:</div>
-      <input class="amount-input" type="number" ng-model="amounts[0]" ng-change="updateBudget()">
-    </div>
-    <div class="ui checkbox">
-      <input type="checkbox" name="rollback" ng-model="amounts[3]" ng-change="updateBudget()">
-      <label></label>
-    </div>
-  </div>
-
-  <h2>Joe:</h2>
-  <div ng-repeat="(category, amounts) in currentBudget.joe">
-    <div class="ui labeled input">
-      <div class="ui label">{{category}}:</div>
-      <input class="amount-input" type="number" ng-model="amounts[0]" ng-change="updateBudget()">
-    </div>
-    <div class="ui checkbox">
-      <input type="checkbox" name="rollback" ng-model="amounts[3]" ng-change="updateBudget()">
-      <label></label>
-    </div>
-  </div-->
 </div>
