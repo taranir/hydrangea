@@ -9,6 +9,19 @@ angular.module('moneystuff')
     // Transactions //
     //////////////////
 
+    this.login = function(u, p) {
+      firebase.auth().signInWithEmailAndPassword(u, p).catch(function(error) {
+        console.log("error signing in");
+        console.log(error);
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // ...
+      });
+      db = firebase.database();
+      console.log("signed in");
+    }
+
     this.getAllTransactionsFBObj = function() {
       return $firebaseObject(db.ref("Transactions")
         .orderByChild("date"));

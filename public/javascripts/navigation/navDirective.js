@@ -14,6 +14,11 @@ app.directive('navigation', function () {
     $scope.navigate = function (url) {
       $location.path(url);
     };
+
+    $scope.login = function() {
+      dataService.login($scope.email, $scope.password);
+    }
+
   }];
   return {
     restrict: 'E', //Default in 1.3+
