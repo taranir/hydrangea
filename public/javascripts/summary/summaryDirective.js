@@ -35,41 +35,32 @@ app.directive('summary', function () {
       for (var i = 0; i < $scope.transactions.length; i++) {
         var t = $scope.transactions[i];
 
-        if (t.year == $scope.currentYear) {
-          if (!(t.users in $scope.userYTD)) {
-            $scope.userYTD[t.users] = 0;
-          }
-          if (!(t.categories in $scope.categoryYTD)) {
-            $scope.categoryYTD[t.categories] = 0;
-          }
-          $scope.userYTD[t.users] += t.amount;
-          $scope.categoryYTD[t.categories] += t.amount;
-        }
-
-        if (t.month == $scope.currentMonth && t.year == $scope.currentYear) {
-          if (!(t.users in $scope.userMTD)) {
-            $scope.userMTD[t.users] = 0;
-          }
-          if (!(t.categories in $scope.categoryMTD)) {
-            $scope.categoryMTD[t.categories] = 0;
-          }
-          $scope.userMTD[t.users] += t.amount;
-          $scope.categoryMTD[t.categories] += t.amount;
-        }
-
-
-        // if (!(t.users in $scope.aggregates)) {
-        //   $scope.aggregates[t.users] = 0;
-        // }
-        // $scope.aggregates[t.users] += t.amount;
-
         if (filterService.shouldShowTransaction($scope.transactions[i])) {
           $scope.matching += 1;
+          if (t.year == $scope.currentYear) {
+            if (!(t.users in $scope.userYTD)) {
+              $scope.userYTD[t.users] = 0;
+            }
+            if (!(t.categories in $scope.categoryYTD)) {
+              $scope.categoryYTD[t.categories] = 0;
+            }
+            $scope.userYTD[t.users] += t.amount;
+            $scope.categoryYTD[t.categories] += t.amount;
+          }
+
+          if (t.month == $scope.currentMonth && t.year == $scope.currentYear) {
+            if (!(t.users in $scope.userMTD)) {
+              $scope.userMTD[t.users] = 0;
+            }
+            if (!(t.categories in $scope.categoryMTD)) {
+              $scope.categoryMTD[t.categories] = 0;
+            }
+            $scope.userMTD[t.users] += t.amount;
+            $scope.categoryMTD[t.categories] += t.amount;
+          }
         }
       }
 
-      // per category, get
-      // YTD, MTD
       console.log("done calculating");
     }
 
