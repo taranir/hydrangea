@@ -3,27 +3,29 @@
 .piggy {
   padding-left: 20px;
   padding-right: 20px;
+  text-align: center;
 
   #pig-wrapper {
     width: 100%;
     text-align: center;
     padding: 20px;
     img {
-      width: 100px;
+      width: 80px;
       height: auto;
     }
   }
 
-  .amount-bar {
-    border: 1px solid grey;
-    height: 10px;
-    background-color: grey;
-    margin-top: 10px;
+  .row {
+    display: flex;
+
+    .col {
+      margin: 10px;
+    }
+    .chart {
+      width: 120px;
+      height: 120px;
+    }
   }
 
-  .totals-user {
-    text-transform: capitalize;
-    margin-top: 15px;
-  }
 
 }

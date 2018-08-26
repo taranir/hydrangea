@@ -22,6 +22,10 @@ angular.module('moneystuff')
       console.log("signed in");
     }
 
+    this.isLoggedIn = function() {
+      return !!firebase.auth().currentUser;
+    }
+
     this.getAllTransactionsFBObj = function() {
       return $firebaseObject(db.ref("Transactions")
         .orderByChild("date"));

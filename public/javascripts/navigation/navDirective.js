@@ -19,6 +19,10 @@ app.directive('navigation', function () {
       dataService.login($scope.email, $scope.password);
     }
 
+    $scope.isLoggedIn = function () {
+      return dataService.isLoggedIn();
+    }
+
   }];
   return {
     restrict: 'E', //Default in 1.3+

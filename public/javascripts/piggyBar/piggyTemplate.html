@@ -2,9 +2,60 @@
 
   <div id="pig-wrapper"><img src="pig.png"></div>
   <div>
-    <h1>{{currentBudgetMonth}}</h1>
-    <!-- <div ng-repeat="(user, title) in [['all', 'Combined'], ['tian', 'Tian'], ['joe', 'Joe']]">
-    </div> -->
+    <h1>Combined</h1>
+    <div class="row">
+      <div class="col">
+        <canvas id="combined-month" class="chart chart-doughnut"
+          chart-data="combinedMonthData" chart-labels="combinedMonthLabels">
+        </canvas>
+          <h2>{{currentMonth}}</h2>
+          Total:
+      </div>
+      <div class="col">
+        <canvas id="combined-year" class="chart chart-doughnut"
+          chart-data="combinedYearData" chart-labels="combinedYearLabels">
+        </canvas>
+          <h2>Year</h2>
+          Total:
+      </div>
+    </div>
+
+    <h1>Tian</h1>
+    <div class="row">
+      <div class="col">
+        <canvas id="tian-month" class="chart chart-doughnut"
+          chart-data="tianMonthData" chart-labels="tianMonthLabels">
+        </canvas>
+          <h2>{{currentMonth}}</h2>
+          Total:
+      </div>
+      <div class="col">
+        <canvas id="tian-year" class="chart chart-doughnut"
+          chart-data="tianYearData" chart-labels="tianYearLabels">
+        </canvas>
+          <h2>Year</h2>
+          Total:
+      </div>
+    </div>
+
+    <h1>Joe</h1>
+    <div class="row">
+      <div class="col">
+        <canvas id="joe-month" class="chart chart-doughnut"
+          chart-data="joeMonthData" chart-labels="joeMonthLabels">
+        </canvas>
+          <h2>{{currentMonth}}</h2>
+          Total:
+      </div>
+      <div class="col">
+        <canvas id="joe-year" class="chart chart-doughnut"
+          chart-data="joeYearData" chart-labels="joeYearLabels">
+        </canvas>
+          <h2>Year</h2>
+          Total:
+      </div>
+    </div>
+    <!-- <h1>{{currentBudgetMonth}}</h1>
     <h2>Combined:</h2>
     <div ng-repeat="(category, amounts) in currentBudget.all">
       <div class="ui progress all-progress" id="all-{{category}}-progress">
@@ -27,23 +78,18 @@
       </div>
     </div>
   </div>
-----------------------------
   <div>
     This Month: {{paidText}}
   </div>
   <div>
     Overall: {{paidTextTotal}}
   </div>
-----------------------------
   <div>
     {{currentBudget}}
   </div>
-----------------------------
   <div>
     {{monthTotals}}
   </div>
----------------------------- </br>
-----------------------------
   <div>
     <table>
       <tr>
@@ -67,8 +113,6 @@
       </tbody>
     </table>
   </div>
----------------------------- </br>
-----------------------------
   <div>
     <div ng-repeat="(user, totals) in aggregates[0]">
       <div class="totals-user"><h2>{{user}}:</h2></div>
@@ -76,6 +120,6 @@
         <div class="amount-bar" ng-style="{width: amount*100/maxAmount + '%'}"></div>
         <div class="amount-label">{{category}}: ${{amount}}</div>
       </div>
-    </div>
+    </div> -->
   </div>
 </div>

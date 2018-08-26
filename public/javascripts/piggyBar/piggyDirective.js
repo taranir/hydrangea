@@ -3,6 +3,21 @@ app.directive('piggy', function () {
   var controller = ['$scope', '$rootScope', 'dataService', 'filterService', function ($scope, $rootScope, dataService, filterService) {
     this.init = function() {
       $scope.currentMonth = getMonth(new Date());
+      $scope.combinedMonthLabels = ["Download Sales", "In-Store Sales", "Mail-Order Sales"];
+      $scope.combinedMonthData = [300, 500, 100];
+      $scope.combinedYearLabels = ["Download Sales", "In-Store Sales", "Mail-Order Sales"];
+      $scope.combinedYearData = [300, 500, 100];
+
+      $scope.tianMonthLabels = ["Download Sales", "In-Store Sales", "Mail-Order Sales"];
+      $scope.tianMonthData = [300, 500, 100];
+      $scope.tianYearLabels = ["Download Sales", "In-Store Sales", "Mail-Order Sales"];
+      $scope.tianYearData = [300, 500, 100];
+
+      $scope.joeMonthLabels = ["Download Sales", "In-Store Sales", "Mail-Order Sales"];
+      $scope.joeMonthData = [300, 500, 100];
+      $scope.joeYearLabels = ["Download Sales", "In-Store Sales", "Mail-Order Sales"];
+      $scope.joeYearData = [300, 500, 100];
+      //////////////////////////////////////////////////////////////////
 
       $scope.budgetArray = dataService.getAllBudgetsFBArray();
       $scope.budgetArray.$loaded()
