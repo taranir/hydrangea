@@ -2,10 +2,11 @@
   <input type="file" id="file" name="file" accep=".csv"/>
   <button ng-click="upload()" class="add-button positive ui button">Upload</button>
   <button ng-click="addTransactions()" class="add-button positive ui button">Add</button>
+  <button ng-click="clearTransactions()" class="add-button negative ui button">Clear</button>
 
   <!-- TRANSACTIONS////////////////////////////////////////////////////////////-->
   <table class="transaction-table ui single line celled table">
     <thead transaction-headers show-delete="true"></thead>
-    <tr class="input-row" transaction-input ng-repeat="t in transactions" transaction="t" all-users="allUsers" add-transaction="addTransaction()"></tr>
+    <tr class="input-row" transaction-input ng-repeat="t in transactions" transaction="t" all-users="allUsers" is-upload="true"></tr>
   </table>
 </div>

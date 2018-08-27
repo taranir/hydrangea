@@ -1,8 +1,8 @@
 <td>
   <div class="ui input">
-    <input class="year-input" type="text" ng-keypress="inputKeypress($event)" ng-model="transaction.year">
-    <input class="month-input" type="text" ng-keypress="inputKeypress($event)" ng-model="transaction.month">
-    <input class="day-input" type="text" ng-keypress="inputKeypress($event)" ng-model="transaction.day">
+    <input class="year-input" type="text" ng-keypress="inputKeypress($event)" ng-model="transaction.year" ng-disabled="!transaction.shouldAdd">
+    <input class="month-input" type="text" ng-keypress="inputKeypress($event)" ng-model="transaction.month" ng-disabled="!transaction.shouldAdd">
+    <input class="day-input" type="text" ng-keypress="inputKeypress($event)" ng-model="transaction.day" ng-disabled="!transaction.shouldAdd">
   </div>
 </td>
 <td>
@@ -10,7 +10,7 @@
     <div class="grouped fields">
       <div class="field" ng-repeat="user in allUsers">
         <div class="ui checkbox">
-          <input type="checkbox" ng-model="transaction.usersInput[user]" name="{{user}}" value="{{user}}">
+          <input type="checkbox" ng-model="transaction.usersInput[user]" name="{{user}}" value="{{user}}" ng-disabled="!transaction.shouldAdd">
           <label>{{user}}</label>
         </div>
       </div>
@@ -20,18 +20,25 @@
 
 <td>
   <div class="ui input">
-    <input type="text" ng-keypress="inputKeypress($event)" ng-model="transaction.description">
+    <input type="text" ng-keypress="inputKeypress($event)" ng-model="transaction.description" ng-disabled="!transaction.shouldAdd">
   </div>
 </td>
 <td>
   <div class="ui input">
     <!--input class="amount-input" type="number" step='0.01' ng-keypress="inputKeypress($event)" ng-model="transaction.amount"-->
-    <input type="text" ng-keypress="inputKeypress($event)" ng-model="transaction.amount" ng-currency currency-symbol=""/>
+    <input type="text" ng-keypress="inputKeypress($event)" ng-model="transaction.amount" ng-currency currency-symbol="" ng-disabled="!transaction.shouldAdd"/>
   </div>
 </td>
 <td>
   <div class="ui input">
-    <input type="text" ng-keypress="inputKeypress($event)" ng-model="transaction.categories">
+    <input type="text" ng-keypress="inputKeypress($event)" ng-model="transaction.categories" ng-disabled="!transaction.shouldAdd">
   </div>
 </td>
-<td><button ng-click="addTransaction()" class="add-button positive ui button">+</button></td>
+<td ng-if="!isUpload">
+  <button ng-click="addTransaction()" class="add-button positive ui button">+</button>
+</td>
+<td ng-if="isUpload">
+  <div class="ui input">
+    <input type="checkbox" ng-model="transaction.shouldAdd">
+  </div>
+</td>

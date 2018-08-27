@@ -69,6 +69,7 @@ app.directive('upload', function () {
         t.usersInput = {};
         t.usersInput["Joe"] = true;
         t.originalHash = [t.date, t.amount, t.description].join(".");
+        t.shouldAdd = true;
         transactions.push(t);
       }
       return transactions;
@@ -97,6 +98,7 @@ app.directive('upload', function () {
         t.usersInput = {};
         t.usersInput["Tian"] = true;
         t.originalHash = [t.date, t.amount, t.description].join(".");
+        t.shouldAdd = true;
         transactions.push(t);
       }
       return transactions;
@@ -119,6 +121,7 @@ app.directive('upload', function () {
         t.usersInput = {};
         t.usersInput["Joe"] = true;
         t.originalHash = [t.date, t.amount, t.description].join(".");
+        t.shouldAdd = true;
         transactions.push(t);
       }
       return transactions;
@@ -151,7 +154,11 @@ app.directive('upload', function () {
     };
 
     $scope.addTransactions = function() {
+      console.log("alkjsldjlfkjlkjalkjsdf");
       for (var i = $scope.transactions.length - 1; i >= 0; i--) {
+        if (!$scope.transactions[i].shouldAdd) {
+          continue;
+        }
         var t = Object.assign({}, $scope.transactions[i]);
         dataService.prepareTransaction(t);
         var errors = dataService.validateTransaction(t);
@@ -160,10 +167,14 @@ app.directive('upload', function () {
         } else {
           console.log(t);
           delete t.$$hashKey;
-          dataService.saveNewTransaction(t);
-          $scope.transactions.splice(i, 1);
+          // dataService.saveNewTransaction(t);
+          // $scope.transactions.splice(i, 1);
         }
       }
+    }
+
+    $scope.clearTransactions = function() {
+      $scope.transactions = [];
     }
 
     init();

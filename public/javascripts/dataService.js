@@ -83,8 +83,11 @@ angular.module('moneystuff')
         t.users = Object.keys(u).map(function(k) { if (u[k]) { return k; } }).filter(Boolean);
         delete t.usersInput;
       }
+      delete t.disabled;
 
-      t.categories = t.categories.split(",").map(function(s) { return s.trim(); });
+      if (t.categories) {
+        t.categories = t.categories.split(",").map(function(s) { return s.trim(); });
+      }
       t.date = processDate(parseInt(t.year), parseInt(t.month), parseInt(t.day));
       if (!t.originalHash) {
         t.originalHash = [t.date, t.amount, t.description].join(".");

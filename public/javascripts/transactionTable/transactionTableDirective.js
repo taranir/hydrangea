@@ -24,7 +24,8 @@ app.directive('transactionHeaders', function () {
     scope: {
       transaction : '=',
       allUsers: '=',
-      addTransaction: '&'
+      addTransaction: '&',
+      isUpload: '='
     },
     controller: function($scope) {
       $scope.inputKeypress = function(event) {
