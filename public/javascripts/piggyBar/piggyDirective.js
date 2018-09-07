@@ -23,7 +23,7 @@ app.directive('piggy', function () {
       if (!(k in m)) {
         m[k] = 0;
       }
-      m[k] += v;
+      m[k] = Math.round((m[k] + v) * 100) / 100;
     }
 
     $scope.calculateValues = function() {

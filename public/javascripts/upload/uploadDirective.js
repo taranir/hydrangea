@@ -167,8 +167,8 @@ app.directive('upload', function () {
         } else {
           console.log(t);
           delete t.$$hashKey;
-          // dataService.saveNewTransaction(t);
-          // $scope.transactions.splice(i, 1);
+          dataService.saveNewTransaction(t);
+          $scope.transactions.splice(i, 1);
         }
       }
     }

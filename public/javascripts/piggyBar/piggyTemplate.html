@@ -9,14 +9,14 @@
           chart-data="combinedMonthData" chart-labels="combinedMonthLabels">
         </canvas>
           <h2>{{currentMonth}}</h2>
-          Total: {{combinedMonthTotal}}
+          Total: {{combinedMonthTotal.toFixed(2)}}
       </div>
       <div class="col">
         <canvas id="combined-year" class="chart chart-doughnut"
           chart-data="combinedYearData" chart-labels="combinedYearLabels">
         </canvas>
           <h2>Year</h2>
-          Total: {{combinedYearTotal}}
+          Total: {{combinedYearTotal.toFixed(2)}}
       </div>
     </div>
 
@@ -27,14 +27,14 @@
           chart-data="tianMonthData" chart-labels="tianMonthLabels">
         </canvas>
           <h2>{{currentMonth}}</h2>
-          Total: {{tianMonthTotal}}
+          Total: {{tianMonthTotal.toFixed(2)}}
       </div>
       <div class="col">
         <canvas id="tian-year" class="chart chart-doughnut"
           chart-data="tianYearData" chart-labels="tianYearLabels">
         </canvas>
           <h2>Year</h2>
-          Total: {{tianYearTotal}}
+          Total: {{tianYearTotal.toFixed(2)}}
       </div>
     </div>
 
@@ -45,14 +45,14 @@
           chart-data="joeMonthData" chart-labels="joeMonthLabels">
         </canvas>
           <h2>{{currentMonth}}</h2>
-          Total: {{joeMonthTotal}}
+          Total: {{joeMonthTotal.toFixed(2)}}
       </div>
       <div class="col">
         <canvas id="joe-year" class="chart chart-doughnut"
           chart-data="joeYearData" chart-labels="joeYearLabels">
         </canvas>
           <h2>Year</h2>
-          Total: {{joeYearTotal}}
+          Total: {{joeYearTotal.toFixed(2)}}
       </div>
     </div>
     <!-- <h1>{{currentBudgetMonth}}</h1>
