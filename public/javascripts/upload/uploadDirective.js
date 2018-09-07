@@ -82,10 +82,7 @@ app.directive('upload', function () {
         var description = d[2].trim();
         var debit = d[3];
         var credit = d[4];
-        if (d[1] > "02/05/2018") {
-          debit = d[4];
-          credit = d[3];
-        }
+        
 
         if (description.toLowerCase().indexOf("online payment") > -1) {
           // is a payment
