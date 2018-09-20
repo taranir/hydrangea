@@ -78,6 +78,8 @@ angular.module('moneystuff')
     };
 
     this.prepareTransaction = function(t) {
+      delete t.$priority;
+      delete t.shouldAdd;
       if (t.usersInput) {
         var u = t.usersInput;
         t.users = Object.keys(u).map(function(k) { if (u[k]) { return k; } }).filter(Boolean);
@@ -204,7 +206,7 @@ angular.module('moneystuff')
       $rootScope.$broadcast('optionsUpdated');
     }
 
-    var calculateInitialValues = function(firebaseUsers, firebaseCategories, firebaseTransactions) {
+    this.calculateInitialValues = function(firebaseUsers, firebaseCategories, firebaseTransactions) {
       var tYears = new Set();
       var tUsers = new Set();
       var tCategories = new Set();
@@ -253,8 +255,8 @@ angular.module('moneystuff')
     var firebaseTransactions = this.getAllTransactionsFBArray();
     Promise.all([firebaseUsers.$loaded(), firebaseCategories.$loaded(), firebaseTransactions.$loaded()])
       .then(function(values) {
-        calculateInitialValues(...values);
-      });
+        this.calculateInitialValues(...values);
+      }.bind(this));
 
     return this;
   }]);

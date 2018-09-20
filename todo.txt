@@ -8,3 +8,12 @@
      - get all that match filter + last reset
      - sum up, update lastUpdate and currentTotal
  - settingsDirective should be budgetDirective or something
+
+ - get rid of summary, i guess
+ - revamp category - primary+secondary
+ - objects? transaction vs potential object
+
+ upload
+ - autocomplete category
+ - fix tab order
+ - make "removed" more distinctive

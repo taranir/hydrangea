@@ -9,13 +9,23 @@ app.directive('transactionHeaders', function () {
 }).directive('transactionRow', function () {
   return {
     scope: {
-      data : '=',
+      data: '=',
+      selected: '=',
+      allUsers: '=',
       showDelete: '=',
+      isSelected: '=',
+      saveSelected: '&',
       deleteConfirmation: '&'
     },
     controller: function($scope) {
       $scope.renderDate = renderDate;
       $scope.padAmount = padAmount;
+
+      $scope.inputKeypress = function(event) {
+        if (event.keyCode === 13) {
+          $scope.saveSelected();
+        }
+      }
     },
     templateUrl: 'javascripts/transactionTable/transactionRow.html',
   };
@@ -63,7 +73,21 @@ app.directive('transactionTable', ['dataService', 'filterService', function (dat
     $scope.getNewTransaction = function() {
       var nt = dataService.getNewTransaction();
       nt.usersInput = {};
+      nt.shouldAdd = true;
       return nt;
+    }
+
+    var copyAsNewTransaction = function(transaction) {
+      var copy = angular.copy(transaction);
+
+      copy.usersInput = {};
+      for (var i = 0; i < transaction.users.length; i++) {
+        copy.usersInput[transaction.users[i]] = true;
+      }
+      // console.log($scope.allUsers);
+      copy.categories = copy.categories.join(",");
+      // console.log(copy);
+      return copy;
     }
 
     $scope.inputKeypress = function(event) {
@@ -73,23 +97,44 @@ app.directive('transactionTable', ['dataService', 'filterService', function (dat
     }
 
     $scope.addTransaction = function() {
-      dataService.prepareTransaction($scope.newTransaction);
-      console.log($scope.newTransaction);
-
-      // TODO: check for new users/categories/years
-
-      var errors = dataService.validateTransaction($scope.newTransaction);
-      if (errors.length > 0) {
-        $scope.transactionErrors = errors;
-        console.log(errors);
-      } else {
-        $scope.transactionErrors = [];
-        dataService.saveNewTransaction($scope.newTransaction);
+      $scope.prepAndAddTransaction($scope.newTransaction);
+      if (!$scope.transactionErrors) {
         var oldTransaction = $scope.newTransaction;
         $scope.newTransaction = $scope.getNewTransaction();
         $scope.newTransaction.year = oldTransaction.year;
         $scope.newTransaction.day = oldTransaction.day;
         $scope.newTransaction.month = oldTransaction.month;
+      }
+    }
+
+    $scope.saveSelected = function() {
+      // console.log("save selected");
+      // console.log($scope.selected);
+      $scope.prepAndAddTransaction($scope.selected);
+      $scope.selected = null;
+      $scope.selectedId = null;
+    }
+
+    $scope.prepAndAddTransaction = function(transaction) {
+      dataService.prepareTransaction(transaction);
+      console.log("saving transaction:");
+      console.log(transaction);
+
+      // TODO: check for new users/categories/years
+
+      var errors = dataService.validateTransaction(transaction);
+      if (errors.length > 0) {
+        $scope.transactionErrors = errors;
+        console.log(errors);
+      } else {
+        $scope.transactionErrors = [];
+        if (transaction.$id) {
+          var id = transaction.$id;
+          delete transaction.$id;
+          dataService.updateTransaction(id, transaction)
+        } else {
+          dataService.saveNewTransaction(transaction);
+        }
       }
     }
 
@@ -104,6 +149,14 @@ app.directive('transactionTable', ['dataService', 'filterService', function (dat
       $scope.transactionArray.$remove($scope.transactionArray.$getRecord($scope.keyToDelete));
       // dataService.deleteTransaction($scope.keyToDelete);
       $scope.resetDelete();
+    };
+
+    $scope.clickTransaction = function(transaction) {
+      // copyAsNewTransaction(transaction);
+      // console.log(transaction.$id);
+      $scope.selected = copyAsNewTransaction(transaction);
+      $scope.selectedId = transaction.$id;
+      // TODO: prep transaction
     };
 
     $scope.resetDelete = function() {

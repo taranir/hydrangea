@@ -29,9 +29,20 @@
   <!-- TRANSACTIONS////////////////////////////////////////////////////////////-->
   <table class="transaction-table ui single line celled table">
     <thead transaction-headers show-delete="true"></thead>
-    <tr class="input-row" transaction-input transaction="newTransaction" all-users="allUsers" add-transaction="addTransaction()"></tr>
+    <tr class="transaction-row" transaction-input transaction="newTransaction" all-users="allUsers" add-transaction="addTransaction()"></tr>
 
-    <tr transaction-row ng-repeat="transaction in transactionArray | orderBy:'-date'" ng-if="shouldShowTransaction(transaction)" data="transaction" show-delete="true" delete-confirmation="deleteConfirmation(transaction.$id)"></tr>
+    <tr transaction-row
+        ng-repeat="transaction in transactionArray | orderBy:'-date'"
+        ng-if="shouldShowTransaction(transaction)"
+        class="transaction-row"
+        data="transaction"
+        selected="selected"
+        all-users="allUsers"
+        show-delete="true"
+        is-selected="transaction.$id == selectedId"
+        save-selected="saveSelected()"
+        delete-confirmation="deleteConfirmation(transaction.$id)"
+        ng-click="clickTransaction(transaction)"></tr>
 
   </table>
 </div>
