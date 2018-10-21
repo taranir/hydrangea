@@ -35,29 +35,51 @@ app.directive('piggy', function () {
       for (var ti = 0; ti < $scope.transactions.length; ti++) {
         var t = $scope.transactions[ti];
 
-        for (var ci = 0; ci < t.categories.length; ci++) {
-          var c = t.categories[ci];
-          if (t.year == $scope.currentYear) {
-            incrementValue($scope.allYTD, c, t.amount);
+        var c = t.primary;
+        if (t.year == $scope.currentYear) {
+          incrementValue($scope.allYTD, c, t.amount);
+          // for each user
+          for (var ui = 0; ui < t.users.length; ui++) {
+            var u = t.users[ui];
+            if (!(u in $scope.userYTD)) { $scope.userYTD[u] = {}; }
+            incrementValue($scope.userYTD[u], c, t.amount);
+          }
+
+          if (t.month == $scope.currentMonth) {
+            incrementValue($scope.allMTD, c, t.amount);
+
             // for each user
             for (var ui = 0; ui < t.users.length; ui++) {
               var u = t.users[ui];
-              if (!(u in $scope.userYTD)) { $scope.userYTD[u] = {}; }
-              incrementValue($scope.userYTD[u], c, t.amount);
-            }
-
-            if (t.month == $scope.currentMonth) {
-              incrementValue($scope.allMTD, c, t.amount);
-
-              // for each user
-              for (var ui = 0; ui < t.users.length; ui++) {
-                var u = t.users[ui];
-                if (!(u in $scope.userMTD)) { $scope.userMTD[u] = {}; }
-                incrementValue($scope.userMTD[u], c, t.amount);
-              }
+              if (!(u in $scope.userMTD)) { $scope.userMTD[u] = {}; }
+              incrementValue($scope.userMTD[u], c, t.amount);
             }
           }
         }
+
+        // for (var ci = 0; ci < t.categories.length; ci++) {
+        //   var c = t.categories[ci];
+        //   if (t.year == $scope.currentYear) {
+        //     incrementValue($scope.allYTD, c, t.amount);
+        //     // for each user
+        //     for (var ui = 0; ui < t.users.length; ui++) {
+        //       var u = t.users[ui];
+        //       if (!(u in $scope.userYTD)) { $scope.userYTD[u] = {}; }
+        //       incrementValue($scope.userYTD[u], c, t.amount);
+        //     }
+
+        //     if (t.month == $scope.currentMonth) {
+        //       incrementValue($scope.allMTD, c, t.amount);
+
+        //       // for each user
+        //       for (var ui = 0; ui < t.users.length; ui++) {
+        //         var u = t.users[ui];
+        //         if (!(u in $scope.userMTD)) { $scope.userMTD[u] = {}; }
+        //         incrementValue($scope.userMTD[u], c, t.amount);
+        //       }
+        //     }
+        //   }
+        // }
       }
       console.log("done calculating");
 

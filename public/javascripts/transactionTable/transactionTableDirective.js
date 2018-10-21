@@ -22,9 +22,13 @@ app.directive('transactionHeaders', function () {
       $scope.padAmount = padAmount;
 
       $scope.inputKeypress = function(event) {
+        console.log("in transaction row");
         if (event.keyCode === 13) {
           $scope.saveSelected();
         }
+        // if (event.keyCode === 27) {
+        //   $scope.cancelSelected();
+        // }
       }
     },
     templateUrl: 'javascripts/transactionTable/transactionRow.html',
@@ -62,6 +66,30 @@ app.directive('transactionTable', ['dataService', 'filterService', function (dat
       $scope.allUsers = dataService.getUserOptions();
 
       $scope.transactionArray = dataService.getAllTransactionsFBArray();
+
+      $scope.transactionArray.$loaded()
+        .then(function() {
+          console.log("----------------------------------------");
+          console.log($scope.transactionArray.length);
+
+          var n = 0;
+          for (var i = 0; i < $scope.transactionArray.length; i++) {
+            var t = $scope.transactionArray[i];
+
+            // var updated = copyAsNewTransaction(t);
+            // updated.primary = t.categories[0];
+            // updated.secondary = "";
+            // updated.tags = [];
+            // delete updated.categories;
+            // $scope.prepAndAddTransaction(updated);
+
+            // if (t.categories.length != 1) {
+            //   console.log(t);
+            // }
+          }
+          console.log(n);
+          console.log("----------------------------------------");
+        });
     }
 
     $scope.$on('optionsUpdated', function() {
@@ -85,12 +113,13 @@ app.directive('transactionTable', ['dataService', 'filterService', function (dat
         copy.usersInput[transaction.users[i]] = true;
       }
       // console.log($scope.allUsers);
-      copy.categories = copy.categories.join(",");
+      // copy.tags = copy.tags.join(",");
       // console.log(copy);
       return copy;
     }
 
     $scope.inputKeypress = function(event) {
+      console.log("in transaction main");
       if (event.keyCode === 13) {
         $scope.addTransaction();
       }
@@ -111,6 +140,11 @@ app.directive('transactionTable', ['dataService', 'filterService', function (dat
       // console.log("save selected");
       // console.log($scope.selected);
       $scope.prepAndAddTransaction($scope.selected);
+      $scope.selected = null;
+      $scope.selectedId = null;
+    }
+
+    $scope.cancelSelected = function() {
       $scope.selected = null;
       $scope.selectedId = null;
     }

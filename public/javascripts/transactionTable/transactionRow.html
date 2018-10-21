@@ -11,8 +11,14 @@
   <pre>{{padAmount(data.amount)}}</pre>
 </td>
 <td ng-if="!isSelected">
-  <span class="tag category-tag" ng-repeat="category in data.categories | orderBy: 'category'">{{category}}</span>
+  <span class="tag category-tag">{{data.primary}}</span>
 </td>
+<td ng-if="!isSelected">
+  <span ng-if="data.secondary" class="tag category-tag">{{data.secondary}}</span>
+</td>
+<!--td ng-if="!isSelected">
+  <span class="tag category-tag" ng-repeat="tag in data.tags | orderBy: 'tag'">{{tag}}</span>
+</td-->
 <td ng-if="showDelete && !isSelected">
   <button class="ui basic button delete-button" ng-click="deleteConfirmation(transaction.$id)">
     <i class="fa fa-times" aria-hidden="true"></i>
@@ -47,16 +53,26 @@
   </div>
 </td>
 <td ng-if="isSelected">
-  <div class="ui input">
+  <div class="ui input amount-input">
     <!--input class="amount-input" type="number" step='0.01' ng-keypress="inputKeypress($event)" ng-model="transaction.amount"-->
-    <input type="text" ng-keypress="inputKeypress($event)" ng-model="selected.amount" ng-currency currency-symbol=""/>
+    <input class="amount-input" type="text" ng-keypress="inputKeypress($event)" ng-model="selected.amount" ng-currency currency-symbol=""/>
   </div>
 </td>
 <td ng-if="isSelected">
   <div class="ui input">
-    <input type="text" ng-keypress="inputKeypress($event)" ng-model="selected.categories">
+    <input type="text" ng-keypress="inputKeypress($event)" ng-model="selected.primary">
   </div>
 </td>
+<td ng-if="isSelected">
+  <div class="ui input">
+    <input type="text" ng-keypress="inputKeypress($event)" ng-model="selected.secondary">
+  </div>
+</td>
+<!--td ng-if="isSelected">
+  <div class="ui input">
+    <input type="text" ng-keypress="inputKeypress($event)" ng-model="selected.categories">
+  </div>
+</td-->
 <td ng-if="isSelected">
   <button ng-click="saveSelected()" class="add-button positive ui button">+</button>
 </td>

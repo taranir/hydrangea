@@ -1,22 +1,31 @@
 <div class="filter-row">
-  <select name="userFilter" ng-model="userFilter" class="ui dropdown" id="userFilter" ng-change="updateFilter()" >
+  <select name="userFilter" ng-model="userFilter" class="ui dropdown" id="userFilter" ng-change="updateFilter()" placeholder="User">
     <option value="">All</option>
     <option ng-repeat="user in allUsers" value="{{user}}">{{user}}
     </option>
   </select>
 
-  <select name="categoryFilter" ng-model="categoryFilter" class="ui dropdown" ng-change="updateFilter()"
-      id="categoryFilter" placeholder="Category">
+  <select name="primaryFilter" ng-model="primaryFilter" class="ui dropdown" ng-change="updateFilter()"
+      id="primaryFilter" placeholder="Primary">
     <option value="">All</option>
-    <option ng-repeat="category in allCategories" value="{{category}}">{{category}}
+    <option ng-repeat="primary in allPrimaries" value="{{primary}}">{{primary}}
     </option>
   </select>
+
+  <select name="secondaryFilter" ng-model="secondaryFilter" class="ui dropdown" ng-change="updateFilter()"
+      id="secondaryFilter" placeholder="Secondary">
+    <option value="">All</option>
+    <option ng-repeat="secondary in allsecondaries" value="{{secondary}}">{{secondary}}
+    </option>
+  </select>
+
   <select name="monthFilter" ng-model="monthFilter" class="ui dropdown" id="monthFilter" ng-change="updateFilter()"
       placeholder="Month">
     <option value="">All</option>
     <option ng-repeat="month in allMonths" value="{{month}}">{{month}}
     </option>
   </select>
+
   <select name="yearFilter" ng-model="yearFilter" class="ui dropdown" id="yearFilter" ng-change="updateFilter()"
       placeholder="Year">
     <option value="">All</option>

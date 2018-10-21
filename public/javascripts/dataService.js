@@ -70,7 +70,9 @@ angular.module('moneystuff')
         day: today.getDate(),
         date: processDate(today.getFullYear(), today.getMonth() + 1, today.getDate()),
         users: [], // list of strings
-        categories: [], // list of strings
+        primary: "",
+        secondary: "",
+        tags: [], // list of strings
         amount: 0,
         description: "",
         originalHash: "",
@@ -87,9 +89,9 @@ angular.module('moneystuff')
       }
       delete t.disabled;
 
-      if (t.categories) {
-        t.categories = t.categories.split(",").map(function(s) { return s.trim(); });
-      }
+      // if (t.tags) {
+      //   t.tags = t.tags.split(",").map(function(s) { return s.trim(); });
+      // }
       t.date = processDate(parseInt(t.year), parseInt(t.month), parseInt(t.day));
       if (!t.originalHash) {
         t.originalHash = [t.date, t.amount, t.description].join(".");
@@ -101,9 +103,12 @@ angular.module('moneystuff')
       if (t.users.length < 1) {
         errors.push("Users can't be blank");
       }
-      if (t.categories.length < 1) {
-        errors.push("Categories can't be blank");
+      if (t.primary.length < 1) {
+        errors.push("Primary category can't be blank");
       }
+      // if (t.categories.length < 1) {
+      //   errors.push("Categories can't be blank");
+      // }
       if (t.description.length < 1) {
         errors.push("Description can't be blank");
       }
@@ -159,28 +164,48 @@ angular.module('moneystuff')
       return db.ref("Users").set(users);
     };
 
-    this.getAllCategories = function() {
-      return $firebaseArray(db.ref("Categories"));
+    this.getAllPrimaries = function() {
+      return $firebaseArray(db.ref("Primaries"));
     };
 
-    this.updateCategories = function(categories) {
-      return db.ref("Categories").set(categories);
+    this.updatePrimaries = function(primaries) {
+      return db.ref("Primaries").set(primaries);
     };
+
+    this.getAllSecondaries = function() {
+      return $firebaseArray(db.ref("Secondaries"));
+    };
+
+    this.updateSecondaries = function(secondaries) {
+      return db.ref("Secondaries").set(secondaries);
+    };
+
+    // this.getAllTags = function() {
+    //   return $firebaseArray(db.ref("Tags"));
+    // };
+
+    // this.updateTags = function(tags) {
+    //   return db.ref("Tags").set(tags);
+    // };
 
     /////////////
     // Options //
     /////////////
 
     var allUsers = [];
-    var allCategories = [];
+    var allPrimaries = [];
+    var allSecondaries = [];
     var allMonths = [];
     var allYears = [];
 
     this.getUserOptions = function() {
       return allUsers;
     }
-    this.getCategoryOptions = function() {
-      return allCategories;
+    this.getPrimaryOptions = function() {
+      return allPrimaries;
+    }
+    this.getSecondaryOptions = function() {
+      return allSecondaries;
     }
     this.getMonthOptions = function() {
       return allMonths;
@@ -193,8 +218,12 @@ angular.module('moneystuff')
       allUsers.push(u);
       $rootScope.$broadcast('optionsUpdated');
     }
-    this.addCategoryOption = function(c) {
-      allCategories.push(c);
+    this.addPrimaryOption = function(c) {
+      allPrimaries.push(c);
+      $rootScope.$broadcast('optionsUpdated');
+    }
+    this.addSecondaryOption = function(c) {
+      allSecondaries.push(c);
       $rootScope.$broadcast('optionsUpdated');
     }
     this.addMonthOption = function(m) {
@@ -206,18 +235,21 @@ angular.module('moneystuff')
       $rootScope.$broadcast('optionsUpdated');
     }
 
-    this.calculateInitialValues = function(firebaseUsers, firebaseCategories, firebaseTransactions) {
+    this.calculateInitialValues = function(firebaseUsers, firebasePrimaries, firebaseSecondaries, firebaseTransactions) {
       var tYears = new Set();
       var tUsers = new Set();
-      var tCategories = new Set();
+      var tPrimaries = new Set();
+      var tSecondaries = new Set();
       angular.forEach(firebaseTransactions, function(t) {
         tYears.add(t.year);
         for (var i = 0; i < t.users.length; i++) {
           tUsers.add(t.users[i]);
         }
-        for (var i = 0; i < t.categories.length; i++) {
-          tCategories.add(t.categories[i]);
-        }
+        tPrimaries.add(t.primary);
+        tSecondaries.add(t.secondary);
+        // for (var i = 0; i < t.tags.length; i++) {
+        //   tTags.add(t.tags[i]);
+        // }
       });
 
       var fUsers = new Set();
@@ -225,9 +257,14 @@ angular.module('moneystuff')
         fUsers.add(u.$value);
       });
 
-      var fCategories = new Set();
-      angular.forEach(firebaseCategories, function(c) {
-        fCategories.add(c.$value);
+      var fPrimaries = new Set();
+      angular.forEach(firebasePrimaries, function(c) {
+        fPrimaries.add(c.$value);
+      });
+
+      var fSescondaries = new Set();
+      angular.forEach(firebaseSecondaries, function(c) {
+        fSescondaries.add(c.$value);
       });
 
       var combinedUsers = Array.from(union(tUsers, fUsers));
@@ -235,13 +272,19 @@ angular.module('moneystuff')
         this.updateUsers(combinedUsers);
       }
 
-      var combinedCategories = Array.from(union(tCategories, fCategories));
-      if (difference(tCategories, fCategories).size > 0) {
-        this.updateCategories(combinedCategories);
+      var combinedPrimaries = Array.from(union(tPrimaries, fPrimaries));
+      if (difference(tPrimaries, fPrimaries).size > 0) {
+        this.updatePrimaries(combinedPrimaries);
+      }
+
+      var combinedSecondaries = Array.from(union(tSecondaries, fSescondaries));
+      if (difference(tSecondaries, fSescondaries).size > 0) {
+        this.updateSecondaries(combinedSecondaries);
       }
 
       allUsers = Array.from(combinedUsers);
-      allCategories = Array.from(combinedCategories);
+      allPrimaries = Array.from(combinedPrimaries);
+      allSecondaries = Array.from(combinedSecondaries);
       allMonths = getMonthNames();
       allYears = Array.from(tYears);
 
@@ -250,10 +293,11 @@ angular.module('moneystuff')
       $rootScope.$broadcast('optionsUpdated');
     }
 
-    var firebaseUsers = this.getAllUsers();
-    var firebaseCategories = this.getAllCategories();
-    var firebaseTransactions = this.getAllTransactionsFBArray();
-    Promise.all([firebaseUsers.$loaded(), firebaseCategories.$loaded(), firebaseTransactions.$loaded()])
+    var fUsers = this.getAllUsers();
+    var fPrimaries = this.getAllPrimaries();
+    var fSescondaries = this.getAllSecondaries();
+    var fTransactions = this.getAllTransactionsFBArray();
+    Promise.all([fUsers.$loaded(), fPrimaries.$loaded(), fSescondaries.$loaded(), fTransactions.$loaded()])
       .then(function(values) {
         this.calculateInitialValues(...values);
       }.bind(this));

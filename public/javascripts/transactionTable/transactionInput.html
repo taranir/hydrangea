@@ -26,14 +26,24 @@
 <td>
   <div class="ui input">
     <!--input class="amount-input" type="number" step='0.01' ng-keypress="inputKeypress($event)" ng-model="transaction.amount"-->
-    <input type="text" ng-keypress="inputKeypress($event)" ng-model="transaction.amount" ng-currency currency-symbol="" ng-disabled="!transaction.shouldAdd"/>
+    <input class="amount-input" type="text" ng-keypress="inputKeypress($event)" ng-model="transaction.amount" ng-currency currency-symbol="" ng-disabled="!transaction.shouldAdd"/>
   </div>
 </td>
 <td>
   <div class="ui input">
-    <input type="text" ng-keypress="inputKeypress($event)" ng-model="transaction.categories" ng-disabled="!transaction.shouldAdd">
+    <input type="text" ng-keypress="inputKeypress($event)" ng-model="transaction.primary" ng-disabled="!transaction.shouldAdd">
   </div>
 </td>
+<td>
+  <div class="ui input">
+    <input type="text" ng-keypress="inputKeypress($event)" ng-model="transaction.secondary" ng-disabled="!transaction.shouldAdd">
+  </div>
+</td>
+<!--td>
+  <div class="ui input">
+    <input type="text" ng-keypress="inputKeypress($event)" ng-model="transaction.categories" ng-disabled="!transaction.shouldAdd">
+  </div>
+</td-->
 <td ng-if="!isUpload">
   <button ng-click="addTransaction()" class="add-button positive ui button">+</button>
 </td>

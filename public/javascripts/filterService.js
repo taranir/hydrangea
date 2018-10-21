@@ -1,7 +1,8 @@
 angular.module('moneystuff')
   .service("filterService", function($rootScope) {
     var userFilter = "";
-    var categoryFilter = "";
+    var primaryFilter = "";
+    var secondaryFilter = "";
     var monthFilter = "";
     var yearFilter = "";
 
@@ -11,11 +12,21 @@ angular.module('moneystuff')
           return false;
         }
       }
-      if (categoryFilter !== "") {
-        if (transaction.categories.indexOf(categoryFilter) == -1) {
+      if (primaryFilter !== "") {
+        if (transaction.primary != primaryFilter) {
           return false;
         }
       }
+      if (secondaryFilter !== "") {
+        if (transaction.secondary != secondaryFilter) {
+          return false;
+        }
+      }
+      // if (tagFilter !== "") {
+      //   if (transaction.tags.indexOf(tagFilter) == -1) {
+      //     return false;
+      //   }
+      // }
       var date = renderDate(transaction["date"]).split("/");
       if (monthFilter !== "") {
         if (numToMonth(date[0]) !== monthFilter) {
@@ -30,9 +41,10 @@ angular.module('moneystuff')
       return true;
     };
 
-    this.updateFilters = function(nUserFilter, nCategoryFilter, nMonthFilter, nYearFilter) {
+    this.updateFilters = function(nUserFilter, nPrimaryFilter, nSecondaryFilter, nMonthFilter, nYearFilter) {
       userFilter = nUserFilter;
-      categoryFilter = nCategoryFilter;
+      primaryFilter = nPrimaryFilter;
+      secondaryFilter = nSecondaryFilter;
       monthFilter = nMonthFilter;
       yearFilter = nYearFilter;
       console.log("filter changed - broadcasting");
